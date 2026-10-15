@@ -74,7 +74,7 @@ const ARTISTAS = [
     frase: "Línea gorda y color sólido: que se lea igual dentro de cuarenta años.",
     estilos: ["Tradicional", "Lettering"],
     instagram: "[INSTAGRAM_NEREA]",
-    foto: "",
+    foto: "https://images.unsplash.com/photo-1543244128-30d70d41e2a9?auto=format&fit=crop&w=700&q=80",
     sello: "golondrina"
   },
   {
@@ -84,7 +84,7 @@ const ARTISTAS = [
     frase: "Lo pequeño también se lleva toda la vida. Por eso lo dibujo despacio.",
     estilos: ["Fine line"],
     instagram: "[INSTAGRAM_LUCIA]",
-    foto: "",
+    foto: "https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&fit=crop&w=700&q=80",
     sello: "helecho"
   },
   {
@@ -94,35 +94,39 @@ const ARTISTAS = [
     frase: "Negro, piel y paciencia. Con eso me basta para casi todo.",
     estilos: ["Blackwork", "Realismo"],
     instagram: "[INSTAGRAM_IKER]",
-    foto: "",
+    foto: "https://images.unsplash.com/photo-1775135436883-56af5c10a476?auto=format&fit=crop&w=700&q=80",
     sello: "ojo"
   }
 ];
 
 /* ---- TRABAJOS (galería) ------------------------------------------------ */
 const TRABAJOS = [
-  { titulo: "Golondrina y rosa", estilo: "Tradicional", artista: "nerea", zona: "Pierna", imagen: "https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&fit=crop&w=900&q=80", motivo: "golondrina" },
-  { titulo: "Botánica en el brazo", estilo: "Fine line", artista: "lucia", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1651692883249-ed36b3523419?auto=format&fit=crop&w=900&q=80", motivo: "helecho" },
-  { titulo: "Ojo que no duerme", estilo: "Blackwork", artista: "iker", zona: "Muñeca", imagen: "https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&fit=crop&w=900&q=80", motivo: "ojo" },
-  { titulo: "Calavera de barco", estilo: "Tradicional", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1543244128-30d70d41e2a9?auto=format&fit=crop&w=900&q=80", motivo: "daga" },
-  { titulo: "Rosa con sombra", estilo: "Tradicional", artista: "nerea", zona: "Mano", imagen: "https://images.unsplash.com/photo-1585303390830-874c989ce8f1?auto=format&fit=crop&w=900&q=80", motivo: "rosa" },
-  { titulo: "Hasta el final", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1479767574301-a01c78234a0c?auto=format&fit=crop&w=900&q=80", motivo: "letras" },
-  { titulo: "Peonías en negro", estilo: "Realismo", artista: "iker", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&fit=crop&w=900&q=80", motivo: "rosa" },
-  { titulo: "Manga negra", estilo: "Blackwork", artista: "iker", zona: "Brazo completo", imagen: "https://images.unsplash.com/photo-1604374376934-2df6fad6519b?auto=format&fit=crop&w=900&q=80", motivo: "serpiente" },
-  { titulo: "Brazo entero", estilo: "Realismo", artista: "iker", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1759247943688-5d47a84dd615?auto=format&fit=crop&w=900&q=80", motivo: "serpiente" },
-  { titulo: "Love, a pulso", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&fit=crop&w=900&q=80", motivo: "corazon" },
-  { titulo: "Línea en el hombro", estilo: "Fine line", artista: "lucia", zona: "Hombro", imagen: "https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&fit=crop&w=900&q=80", motivo: "luna" },
-  { titulo: "Corazón diminuto", estilo: "Fine line", artista: "lucia", zona: "Dedo", imagen: "https://images.unsplash.com/photo-1736628283631-8d9c8167fa88?auto=format&fit=crop&w=900&q=80", motivo: "corazon" }
+  { titulo: "Golondrina y rosa", estilo: "Tradicional", artista: "nerea", zona: "Pierna", imagen: "https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Calavera de barco", estilo: "Tradicional", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1543244128-30d70d41e2a9?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Rosa con sombra", estilo: "Tradicional", artista: "nerea", zona: "Mano", imagen: "https://images.unsplash.com/photo-1585303390830-874c989ce8f1?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Botánica en el brazo", estilo: "Fine line", artista: "lucia", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1651692883249-ed36b3523419?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Sol y luna en costillas", estilo: "Fine line", artista: "lucia", zona: "Costillas", imagen: "https://images.unsplash.com/photo-1595246344716-5c9b563f11fe?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Pájaro en el hombro", estilo: "Fine line", artista: "lucia", zona: "Hombro", imagen: "https://images.unsplash.com/photo-1514466219469-a6a5c8525beb?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Ojo que no duerme", estilo: "Blackwork", artista: "iker", zona: "Muñeca", imagen: "https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Manga negra", estilo: "Blackwork", artista: "iker", zona: "Brazo completo", imagen: "https://images.unsplash.com/photo-1604374376934-2df6fad6519b?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Ojos en el antebrazo", estilo: "Blackwork", artista: "iker", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1706433758051-73c10d1157ca?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Hasta el final", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1479767574301-a01c78234a0c?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Love, a pulso", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "León en el antebrazo", estilo: "Realismo", artista: "iker", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1522687533888-1078974f88ec?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Retrato en manga", estilo: "Realismo", artista: "iker", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1665085326630-b01fea9a613d?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Escultura en la mano", estilo: "Realismo", artista: "iker", zona: "Mano", imagen: "https://images.unsplash.com/photo-1585745422697-1b42b98aac14?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Mirada", estilo: "Realismo", artista: "iker", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1775135436883-56af5c10a476?auto=format&fit=crop&w=900&q=80" },
+  { titulo: "Ángel de espalda", estilo: "Realismo", artista: "iker", zona: "Espalda", imagen: "https://images.unsplash.com/photo-1540174053853-1cc5d1fa8814?auto=format&fit=crop&w=900&q=80" }
 ];
 
 /* ---- FLASH (diseños listos, precio cerrado) ---------------------------- */
 const FLASH = [
-  { nombre: "Golondrina mini", precio: 90,  tamano: "8 cm",  disponible: true,  artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "golondrina" },
-  { nombre: "Rayo",            precio: 60,  tamano: "5 cm",  disponible: true,  artista: "lucia", estilo: "Fine line",   imagen: "", motivo: "rayo" },
-  { nombre: "Estrella náutica",precio: 70,  tamano: "6 cm",  disponible: false, artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "estrella" },
-  { nombre: "Ancla con cabo",  precio: 120, tamano: "10 cm", disponible: true,  artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "ancla" },
-  { nombre: "Sol negro",       precio: 100, tamano: "9 cm",  disponible: false, artista: "iker",  estilo: "Blackwork",   imagen: "", motivo: "sol" },
-  { nombre: "Llave antigua",   precio: 80,  tamano: "7 cm",  disponible: true,  artista: "lucia", estilo: "Fine line",   imagen: "", motivo: "llave" }
+  { nombre: "Corazón mini", precio: 90, tamano: "3 cm", disponible: true, artista: "nerea", estilo: "Tradicional", imagen: "https://images.unsplash.com/photo-1736628283631-8d9c8167fa88?auto=format&fit=crop&w=700&q=80" },
+  { nombre: "Arco iris", precio: 60, tamano: "5 cm", disponible: true, artista: "lucia", estilo: "Fine line", imagen: "https://images.unsplash.com/photo-1720440130086-8c003abedacb?auto=format&fit=crop&w=700&q=80" },
+  { nombre: "Infinito con letra", precio: 70, tamano: "7 cm", disponible: false, artista: "lucia", estilo: "Fine line", imagen: "https://images.unsplash.com/photo-1676007312758-55bcbe7ced09?auto=format&fit=crop&w=700&q=80" },
+  { nombre: "Símbolo en muñeca", precio: 120, tamano: "4 cm", disponible: true, artista: "lucia", estilo: "Fine line", imagen: "https://images.unsplash.com/photo-1559577638-ccfeeb3eca64?auto=format&fit=crop&w=700&q=80" },
+  { nombre: "Línea en el bíceps", precio: 100, tamano: "9 cm", disponible: false, artista: "iker", estilo: "Fine line", imagen: "https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&fit=crop&w=700&q=80" },
+  { nombre: "Punto y trazo", precio: 80, tamano: "3 cm", disponible: true, artista: "lucia", estilo: "Fine line", imagen: "https://images.unsplash.com/photo-1508764356915-704089a634e2?auto=format&fit=crop&w=700&q=80" }
 ];
 
 /* ---- TEMÁTICAS (cintas que se desplazan bajo la portada) --------------- */
@@ -232,17 +236,17 @@ const RESENAS = [
    ESTUDIO.acento (arriba); el resto se cambia aquí.
    ========================================================================== */
 :root {
-  --acento: #F5174E;            /* se sobrescribe con ESTUDIO.acento */
+  --acento: #D8321F;            /* se sobrescribe con ESTUDIO.acento */
   --sobre-acento: #FFFFFF;      /* texto encima del rojo */
   --acento-texto: color-mix(in oklab, var(--acento) 80%, #000);  /* rojo para texto sobre papel */
-  --papel: #FFF1D2;             /* fondo: papel de calco frío */
-  --papel-2: #FFE08A;           /* escalón de tono */
-  --papel-3: #FFC9D6;
-  --hoja: #FFFDF6;              /* hojas de dibujo */
+  --papel: #FAFAF8;             /* fondo: papel de calco frío */
+  --papel-2: #F0EFEB;           /* escalón de tono */
+  --papel-3: #E2E0DA;
+  --hoja: #FFFFFF;              /* hojas de dibujo */
   --tinta: #151413;             /* texto */
   --tinta-2: #4A4743;           /* notas secundarias */
-  --calco: #6D28FF;             /* violeta del stencil térmico (solo dibujos sin entintar) */
-  --pared: #2B1BD1;             /* campo oscuro de la hoja de flash */
+  --calco: #8A8780;             /* violeta del stencil térmico (solo dibujos sin entintar) */
+  --pared: #111111;             /* campo oscuro de la hoja de flash */
   --sobre-pared: #EDEBE5;
   --f-display: "Shrikhand", "Archivo", Georgia, serif;
   --f-texto: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -258,21 +262,22 @@ const RESENAS = [
   --amarillo: #FFD21F;
   --violeta: #6D28FF;
   --rosa: #FF6FA5;
-  --s-ses: #BDF5EA; --s-est: #FFC4D8; --s-cli: #D8CCFF;
+  --s-ses: var(--papel-2); --s-est: var(--papel-2); --s-cli: var(--papel-2);
   color-scheme: light dark;
 }
 /* Modo oscuro: la pared del estudio de noche. Los dibujos siguen en papel. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --papel: #1B0F3A;
-    --papel-2: #2A1660;
-    --papel-3: #3C2290;
-    --hoja: #FFF6E2;
-    --tinta: #FFF3DC;
-    --tinta-2: #D7CCF5;
-    --pared: #12062E;
-    --sobre-pared: #FFF3DC;
-    --s-ses: #0F4A44; --s-est: #5A1740; --s-cli: #33207A;
+    --papel: #111110;
+    --papel-2: #1A1A18;
+    --papel-3: #2A2926;
+    --hoja: #1A1A18;
+    --tinta: #F2F0EA;
+    --tinta-2: #B3B0A8;
+    --calco: #8A8780;
+    --pared: #0A0A09;
+    --sobre-pared: #F2F0EA;
+    --s-ses: var(--papel-2); --s-est: var(--papel-2); --s-cli: var(--papel-2);
   }
 }
 
@@ -961,30 +966,36 @@ fieldset.campo { border: 0; margin: 0; padding: 0; min-width: 0; }
   ::view-transition-group(*) { animation: none; }
 }
 
-/* ---- Capa de color: secciones y marcos vivos --------------------------- */
-body { background-color: var(--papel); background-image: radial-gradient(1200px 600px at 85% -5%, color-mix(in oklab, var(--rosa) 45%, transparent), transparent 60%), radial-gradient(900px 500px at -5% 30%, color-mix(in oklab, var(--turquesa) 35%, transparent), transparent 60%); background-attachment: fixed; }
-.cabecera, .cabecera.con-scroll { background: color-mix(in oklab, var(--papel) 88%, transparent); backdrop-filter: blur(10px); }
-.sesiones { background: var(--s-ses); }
-.estudio { background: var(--s-est); }
-.clientes { background: var(--s-cli); }
-.flash { background: linear-gradient(160deg, var(--pared), color-mix(in oklab, var(--pared) 70%, #FF2E8A)); }
-.pie { background: linear-gradient(160deg, #12062E, #3B0E7A); }
-.boton { box-shadow: 4px 4px 0 var(--tinta); transition: transform .25s var(--ease), box-shadow .25s, background-color .25s; }
-.boton:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--tinta); }
-.boton:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--tinta); }
-.chip { background: var(--amarillo); color: #151413; }
-.chip:hover { background: var(--rosa); }
-.chip[aria-pressed="true"] { background: var(--violeta); color: #fff; }
-.pieza__hoja { background: var(--amarillo); box-shadow: 6px 6px 0 var(--tinta); }
-.pieza:nth-child(4n+2) .pieza__hoja { background: var(--turquesa); }
-.pieza:nth-child(4n+3) .pieza__hoja { background: var(--rosa); }
-.pieza:nth-child(4n+4) .pieza__hoja { background: var(--violeta); }
-.pieza__hoja img { filter: saturate(1.15) contrast(1.05); }
-.artista:nth-child(odd) { background: var(--s-ses); }
-.artista:nth-child(even) { background: var(--s-est); }
-.gira li:nth-child(odd) { background: var(--amarillo); color: #151413; }
-.gira li:nth-child(even) { background: var(--turquesa); color: #151413; }
-.pregunta { background: var(--papel-2); }
+/* ---- Capa minimalista: neutros, tipografía limpia, un solo acento ------ */
+:root { --f-display: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif; }
+h1, h2, h3 { font-weight: 700; letter-spacing: -.035em; line-height: 1.02; font-variation-settings: "wdth" 100; }
+.logo { font-weight: 800; letter-spacing: -.04em; }
+.cabecera, .cabecera.con-scroll { background: color-mix(in oklab, var(--papel) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--papel-3); }
+.boton { box-shadow: none; }
+.boton:hover { transform: none; }
+.chip { background: transparent; color: var(--tinta); box-shadow: inset 0 0 0 1px var(--papel-3); }
+.chip:hover { background: var(--papel-2); }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--papel); box-shadow: none; }
+.portada__foto { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; filter: grayscale(.15) contrast(1.05); }
+.portada__dibujo { background: none !important; padding: 0 !important; }
+.pieza__hoja, .pieza:nth-child(5n+2) .pieza__hoja, .pieza:nth-child(5n+4) .pieza__hoja { background: none; padding: 0; box-shadow: none; transform: none; }
+.pieza__hoja img { aspect-ratio: 4 / 5; filter: none; }
+.pieza:nth-child(3n+2) .pieza__hoja img { aspect-ratio: 1 / 1; }
+.pieza:nth-child(3n+3) .pieza__hoja img { aspect-ratio: 4 / 5.6; }
+.pieza__hoja:hover { transform: scale(1.015); }
+.pieza__titulo { font-weight: 600; font-size: 1.02rem; }
+.artista:nth-child(odd), .artista:nth-child(even) { background: var(--papel); }
+.artista:nth-child(odd) { background: var(--papel-2); }
+.artista__foto { filter: grayscale(.1); }
+.flash { background: var(--pared); }
+.hoja-flash { background: transparent; padding: 0; }
+.hoja-flash img { aspect-ratio: 1 / 1; object-fit: cover; width: 100%; }
+.pie { background: var(--pared); }
+.gira li:nth-child(odd), .gira li:nth-child(even) { background: var(--papel-2); color: var(--tinta); }
+.ficha-cuidados, .resena { transform: none; }
+.paso__hoja { background: transparent; aspect-ratio: auto; display: block; padding: 0 0 14px; border-bottom: 1px solid var(--papel-3); font-size: clamp(2.4rem, 4vw, 3.6rem); font-weight: 300; letter-spacing: -.04em; color: var(--acento); line-height: 1; }
+.cinta, .cinta--roja, .cinta--tinta { background: var(--papel-2); color: var(--tinta); }
+.cinta--tinta { background: var(--tinta); color: var(--papel); }
 </style>
 </head>
 <body>
@@ -1074,22 +1085,11 @@ body { background-color: var(--papel); background-image: radial-gradient(1200px 
 <section class="sesiones seccion" id="sesiones">
   <div class="envoltura">
     <div class="cabeza" data-rv>
-      <h2 class="rv">Así va una pieza grande</h2>
-      <p class="rv">Un proyecto real de principio a fin, sesión a sesión. Mueve la aguja para verlo crecer.</p>
-    </div>
-    <div class="ses" id="ses">
-      <figure class="ses__piel" aria-live="polite">
-        <div class="ses__brazo" id="ses-dibujo"></div>
-        <figcaption class="ses__pie" id="ses-pie"></figcaption>
-      </figure>
-      <div class="ses__panel">
-        <ol class="ses__pasos" id="ses-pasos"></ol>
-        <label class="ses__barra"><span class="sr">Avance del proyecto</span><input type="range" id="ses-rango" min="0" max="5" step="1" value="0"></label>
-        <article class="ses__ficha" id="ses-ficha"></article>
-      </div>
+      <h2 class="rv">Un día de sesión</h2>
+      <p class="rv">Qué pasa desde que entras hasta que sales con la pieza hecha.</p>
     </div>
     <div class="dia" data-rv>
-      <h3 class="dia__titulo rv">Un día de sesión, hora a hora</h3>
+      <h3 class="dia__titulo sr">Hora a hora</h3>
       <ol class="dia__lista rv" id="dia-lista"></ol>
     </div>
   </div>
@@ -1583,6 +1583,10 @@ function dibujoHero() {
 
 function iniciarHero() {
   const cont = $('#hero-dibujo');
+  cont.innerHTML = '<img class="portada__foto" src="https://images.unsplash.com/photo-1759247943688-5d47a84dd615?auto=format&fit=crop&w=1100&q=80" alt="Brazos con tatuajes de estilo tradicional y blackwork" fetchpriority="high">';
+  $('#hero-pista').textContent = '';
+  return;
+  /* dibujo SVG anterior desactivado */
   cont.innerHTML = dibujoHero();
   const svg = $('svg', cont), grupo = $('#m-hero-g', svg), circScroll = $('#m-hero-scroll', svg), pista = $('#hero-pista');
   const tactil = matchMedia('(hover: none), (pointer: coarse)').matches;
@@ -1772,7 +1776,7 @@ function pintarArtistas() {
     const obra = TRABAJOS.filter(t => t.artista === a.id).slice(0, 3);
     const ig = String(a.instagram).replace(/^@/, '');
     return `<article class="artista" data-rv><div class="envoltura artista__rejilla">
-      <div class="artista__sello rv" style="--rot:${[-6, 5, -3][n % 3]}deg">${a.foto ? `<img class="artista__foto" src="${esc(a.foto)}" alt="Retrato de ${esc(a.nombre)}" loading="lazy">` : svgSello(a)}</div>
+      <div class="artista__sello rv" style="--rot:${[-6, 5, -3][n % 3]}deg">${a.foto ? `<img class="artista__foto" src="${esc(a.foto)}" alt="Trabajo de ${esc(a.nombre)}" loading="lazy">` : svgSello(a)}</div>
       <div class="rv">
         <h3>${esc(a.nombre)}</h3>
         <p class="artista__esp">${esc(a.especialidad)}</p>
@@ -1826,16 +1830,7 @@ function pintarFlash() {
    CÓMO FUNCIONA · la misma rosa en cinco estados
    ========================================================================== */
 function pintarPasos() {
-  const caja = (dentro, extra = '') => `<svg class="dib e-trad" viewBox="0 0 200 200" aria-hidden="true">${dentro}${extra}</svg>`;
-  const rosa = () => MOTIVOS.rosa();
-  const estados = {
-    idea: caja(`<circle class="guia" cx="100" cy="96" r="64"/><path class="guia" d="M100 18V184M22 96H178"/><g class="boceto">${rosa()}</g>`),
-    diseno: caja(`<g class="calco">${rosa()}</g>`),
-    senal: caja(`<g class="calco">${rosa()}</g>`, `<g transform="rotate(-12 100 100)" filter="url(#goma)"><rect x="30" y="74" width="140" height="50" fill="var(--hoja)" stroke="var(--acento)" stroke-width="5"/><text x="100" y="109" text-anchor="middle" font-family="Shrikhand" font-size="25" fill="var(--acento)">Señal ${esc(ESTUDIO.senal)} €</text></g>`),
-    sesion: caja(`<g class="calco" transform="translate(1.6 1.3)" opacity=".32">${rosa()}</g><g>${rosa()}</g>`),
-    cuidados: caja(`<g>${rosa()}</g>`, `<rect class="film" x="14" y="22" width="172" height="160"/>`)
-  };
-  $$('[data-paso]').forEach(el => { el.innerHTML = estados[el.dataset.paso]; });
+  $$('[data-paso]').forEach((el, i) => { el.textContent = String(i + 1).padStart(2, '0'); });
 }
 
 /* ==========================================================================
@@ -2049,6 +2044,7 @@ function dibujoSesion() {
     ${chispa(78, 92, 9)}${chispa(162, 252, 7)}${chispa(80, 330, 6)}<circle class="k dot" cx="160" cy="70" r="3"/>`;
 }
 function iniciarSesiones() {
+  if (!$('#ses')) return;
   const P = PROYECTO, pasos = P.pasos, cont = $('#ses-dibujo');
   const d = dibujoSesion();
   cont.innerHTML = `<svg class="dib e-trad piel-dib ses-${pasos[0].estado}" viewBox="0 0 240 460" role="img" aria-label="Antebrazo con el tatuaje ${esc(P.titulo)}">

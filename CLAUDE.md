@@ -4,7 +4,7 @@ Web demo de un estudio de tatuajes ficticio ("Calco") para enseñar a dueños de
 ## Stack
 - HTML + CSS + JavaScript sin dependencias, todo en `index.html`.
 - Google Fonts: Shrikhand (titulares, aire de rótulo pintado) + Archivo (texto).
-- Ilustraciones SVG para flash y portada; la galería usa fotos reales de tatuajes de Unsplash (hotlink a images.unsplash.com, licencia libre).
+- Todas las imágenes de tatuajes son fotos reales de Unsplash (hotlink a images.unsplash.com, licencia libre); SVG solo para el mapa del dolor y el plano.
 - Despliegue: Cloudflare Workers con assets estáticos (worker `demo-tatuaje-3`, cuenta minisobri26), Git integration con el repo `AleexX26/demo-tatuaje-3`. URL: https://demo-tatuaje-3.e275.workers.dev
 
 ## Arquitectura
@@ -23,7 +23,7 @@ Web demo de un estudio de tatuajes ficticio ("Calco") para enseñar a dueños de
 - Probar el despliegue sin subir: `npx --yes wrangler@4 deploy --dry-run`.
 
 ## Decisiones
-- 2026-10-15: v3 colorida: paleta crema/rosa/amarillo/turquesa/violeta, marcos de colores con sombra dura y galería con fotos realistas de Unsplash. Misma estructura que Tatuajes-2.
+- 2026-10-15: v3 minimalista con todo fotografía real (Unsplash): neutros + un solo acento rojo, tipografía Archivo, galería/flash/portada/artistas con fotos; se quita el proyecto SVG de sesiones y los pasos pasan a números. Antes fue una versión colorida (commit 8ea88a2).
 - 2026-10-15: ampliada tras revisar todas las secciones de lamanuelatattoo.com (temáticas, zonas con dolor, invitados, servicios/anestesia/academia, reseñas, contacto con teléfono, legales) para que la demo parezca casi terminada. Reseñas y cifras inventadas a petición del usuario, solo con iniciales; el pie avisa de que son ficticias.
 - 2026-10-15: efectos de tatuaje: titulares h2 que se calcan y entintan al entrar, salpicadura de tinta al hacer clic, zumbido de máquina al pasar por los botones, barra de progreso roja bajo la cabecera, inclinación 3D en la galería, cintas y reseñas en desfile continuo (paran con hover; quietas con reducir movimiento).
 - 2026-10-15: Cloudflare Workers (no Pages heredado), igual que demo-tatuajes y portafolio: `workers_dev: true` y build propio en `wrangler.jsonc` que copia index.html a publico/.
