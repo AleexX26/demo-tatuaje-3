@@ -1,0 +1,2271 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- CAMBIA AQUÍ el título y la descripción que salen en Google y al compartir -->
+<title>Calco · Estudio de tatuaje</title>
+<meta name="description" content="Calco, estudio de tatuaje. Tradicional, fine line, blackwork, realismo y lettering. Flash a precio cerrado y diseño a medida. Pide cita por WhatsApp o email.">
+<meta property="og:title" content="Calco · Estudio de tatuaje">
+<meta property="og:description" content="Tinta que se queda contigo. Mira los trabajos, elige artista y pide cita.">
+<meta property="og:type" content="website">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#ECECE7">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141312">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23D7261E'/%3E%3Cpath d='M16 5C20 12 24 16 24 21a8 8 0 0 1-16 0c0-5 4-9 8-16z' fill='%23F7F6F2'/%3E%3C/svg%3E">
+
+<script>
+/* ==========================================================================
+   DATOS DE LA WEB  ·  Edita solo esta parte, el diseño se adapta solo.
+   --------------------------------------------------------------------------
+   - Para añadir un artista, trabajo o flash: copia un bloque { ... }, pégalo
+     debajo (con su coma) y cambia los textos.
+   - "imagen" / "foto": ruta a una imagen (ej. "img/golondrina.jpg"). Si lo
+     dejas vacío (""), la web dibuja una ilustración SVG con su nombre.
+   - "motivo" (opcional) elige el dibujo de la ilustración generada:
+     golondrina, rosa, daga, serpiente, luna, ojo, polilla, helecho, corazon,
+     ancla, estrella, rayo, cereza, sol, llave, montana, letras.
+   - Los filtros de la galería y los desplegables de la reserva se generan
+     solos con los estilos y artistas que pongas aquí.
+   ========================================================================== */
+
+/* ---- ESTUDIO: nombre, contacto, redes y color -------------------------- */
+const ESTUDIO = {
+  nombre: "Calco",                          // Nombre corto (logo y pie)
+  nombreLargo: "Calco Estudio de Tatuaje",
+  ciudad: "[CIUDAD]",
+  barrio: "[BARRIO]",
+  direccion: "[DIRECCIÓN]",                 // Calle, número y código postal
+  // Enlace del mapa: busca la dirección en Google Maps (no necesita API).
+  // Si lo dejas vacío se genera solo a partir de "direccion" y "ciudad".
+  mapa: "",
+  horario: [                                // [día, horas]
+    ["Martes a viernes", "11:00 – 20:00"],
+    ["Sábado", "10:00 – 15:00"],
+    ["Domingo y lunes", "Cerrado"]
+  ],
+  email: "[CORREO]",                        // ej. hola@tuestudio.com
+  whatsapp: "[WHATSAPP]",                   // Con prefijo y sin espacios: 34600111222
+  instagram: "[INSTAGRAM]",                 // Usuario sin @
+  telefono: "[TELÉFONO]",                   // Para el botón "Llamar": +34 600 111 222
+  // Cifras que cuentan solas al aparecer (número, texto). Son de muestra.
+  cifras: [
+    ["2.400", "tatuajes hechos en el estudio"],
+    ["4,9", "de nota media en reseñas"],
+    ["9", "años tatuando en el barrio"],
+    ["0", "agujas reutilizadas. Nunca."]
+  ],
+  // Titular de la portada: cada elemento es una línea.
+  titular: ["Tinta que se", "queda contigo"],
+  frase: "Estudio pequeño, tres artistas y una aguja nueva para cada piel. Dibujamos tu pieza desde cero o te tatuamos un flash a precio cerrado.",
+  agenda: "Agenda abierta para noviembre",
+  precioMinimo: 60,                         // €
+  senal: 50,                                // € de señal para reservar
+  acento: "#D7261E"                         // COLOR DE ACENTO (rojo de tinta tradicional)
+};
+
+/* ---- ARTISTAS ----------------------------------------------------------
+   id: palabra corta sin espacios (se usa en trabajos y flash).
+   sello: motivo del sello que sale si no hay foto.                        */
+const ARTISTAS = [
+  {
+    id: "nerea",
+    nombre: "Nerea Calvo",
+    especialidad: "Tradicional y lettering",
+    frase: "Línea gorda y color sólido: que se lea igual dentro de cuarenta años.",
+    estilos: ["Tradicional", "Lettering"],
+    instagram: "[INSTAGRAM_NEREA]",
+    foto: "",
+    sello: "golondrina"
+  },
+  {
+    id: "lucia",
+    nombre: "Lucía Ferrer",
+    especialidad: "Fine line y botánica",
+    frase: "Lo pequeño también se lleva toda la vida. Por eso lo dibujo despacio.",
+    estilos: ["Fine line"],
+    instagram: "[INSTAGRAM_LUCIA]",
+    foto: "",
+    sello: "helecho"
+  },
+  {
+    id: "iker",
+    nombre: "Iker Montes",
+    especialidad: "Blackwork y realismo en puntos",
+    frase: "Negro, piel y paciencia. Con eso me basta para casi todo.",
+    estilos: ["Blackwork", "Realismo"],
+    instagram: "[INSTAGRAM_IKER]",
+    foto: "",
+    sello: "ojo"
+  }
+];
+
+/* ---- TRABAJOS (galería) ------------------------------------------------ */
+const TRABAJOS = [
+  { titulo: "Golondrina y rosa", estilo: "Tradicional", artista: "nerea", zona: "Pierna", imagen: "https://images.unsplash.com/photo-1601848714157-d845bb5c11ff?auto=format&fit=crop&w=900&q=80", motivo: "golondrina" },
+  { titulo: "Botánica en el brazo", estilo: "Fine line", artista: "lucia", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1651692883249-ed36b3523419?auto=format&fit=crop&w=900&q=80", motivo: "helecho" },
+  { titulo: "Ojo que no duerme", estilo: "Blackwork", artista: "iker", zona: "Muñeca", imagen: "https://images.unsplash.com/photo-1627960630431-270d04164a22?auto=format&fit=crop&w=900&q=80", motivo: "ojo" },
+  { titulo: "Calavera de barco", estilo: "Tradicional", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1543244128-30d70d41e2a9?auto=format&fit=crop&w=900&q=80", motivo: "daga" },
+  { titulo: "Rosa con sombra", estilo: "Tradicional", artista: "nerea", zona: "Mano", imagen: "https://images.unsplash.com/photo-1585303390830-874c989ce8f1?auto=format&fit=crop&w=900&q=80", motivo: "rosa" },
+  { titulo: "Hasta el final", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1479767574301-a01c78234a0c?auto=format&fit=crop&w=900&q=80", motivo: "letras" },
+  { titulo: "Peonías en negro", estilo: "Realismo", artista: "iker", zona: "Antebrazo", imagen: "https://images.unsplash.com/photo-1562962230-16e4623d36e6?auto=format&fit=crop&w=900&q=80", motivo: "rosa" },
+  { titulo: "Manga negra", estilo: "Blackwork", artista: "iker", zona: "Brazo completo", imagen: "https://images.unsplash.com/photo-1604374376934-2df6fad6519b?auto=format&fit=crop&w=900&q=80", motivo: "serpiente" },
+  { titulo: "Brazo entero", estilo: "Realismo", artista: "iker", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1759247943688-5d47a84dd615?auto=format&fit=crop&w=900&q=80", motivo: "serpiente" },
+  { titulo: "Love, a pulso", estilo: "Lettering", artista: "nerea", zona: "Brazo", imagen: "https://images.unsplash.com/photo-1570168983832-8989dae1522e?auto=format&fit=crop&w=900&q=80", motivo: "corazon" },
+  { titulo: "Línea en el hombro", estilo: "Fine line", artista: "lucia", zona: "Hombro", imagen: "https://images.unsplash.com/photo-1547754145-ef9ff306e3f3?auto=format&fit=crop&w=900&q=80", motivo: "luna" },
+  { titulo: "Corazón diminuto", estilo: "Fine line", artista: "lucia", zona: "Dedo", imagen: "https://images.unsplash.com/photo-1736628283631-8d9c8167fa88?auto=format&fit=crop&w=900&q=80", motivo: "corazon" }
+];
+
+/* ---- FLASH (diseños listos, precio cerrado) ---------------------------- */
+const FLASH = [
+  { nombre: "Golondrina mini", precio: 90,  tamano: "8 cm",  disponible: true,  artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "golondrina" },
+  { nombre: "Rayo",            precio: 60,  tamano: "5 cm",  disponible: true,  artista: "lucia", estilo: "Fine line",   imagen: "", motivo: "rayo" },
+  { nombre: "Estrella náutica",precio: 70,  tamano: "6 cm",  disponible: false, artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "estrella" },
+  { nombre: "Ancla con cabo",  precio: 120, tamano: "10 cm", disponible: true,  artista: "nerea", estilo: "Tradicional", imagen: "", motivo: "ancla" },
+  { nombre: "Sol negro",       precio: 100, tamano: "9 cm",  disponible: false, artista: "iker",  estilo: "Blackwork",   imagen: "", motivo: "sol" },
+  { nombre: "Llave antigua",   precio: 80,  tamano: "7 cm",  disponible: true,  artista: "lucia", estilo: "Fine line",   imagen: "", motivo: "llave" }
+];
+
+/* ---- TEMÁTICAS (cintas que se desplazan bajo la portada) --------------- */
+const TEMATICAS = ["Golondrinas", "Rosas", "Retratos", "Mascotas", "Lettering", "Mitología", "Botánica", "Dagas", "Serpientes", "Cover-up", "Fechas y nombres", "Ornamental", "Cine", "Felinos"];
+
+/* ---- SESIONES: demo de un proyecto grande paso a paso -------------------
+   Cliente anónimo. "estado" decide cómo se ve el dibujo en cada paso:
+   boceto, calco, linea, sombra, color, curado.                           */
+const PROYECTO = {
+  titulo: "Serpiente y daga",
+  estilo: "Tradicional",
+  artista: "nerea",
+  zona: "Antebrazo",
+  medida: "24 × 11 cm",
+  cliente: "Cliente anónimo · nos dio permiso para enseñar el proceso",
+  presupuesto: "3 sesiones · 420 € cerrados",
+  pasos: [
+    { nombre: "Consulta", estado: "boceto", cuando: "Día 1", duracion: "30 min",
+      texto: "Hablamos de la idea, medimos el antebrazo y hacemos fotos de la zona. Sale con presupuesto cerrado y fecha.",
+      material: "Lápiz, cinta métrica y referencias" },
+    { nombre: "Diseño", estado: "calco", cuando: "Día 12", duracion: "2 semanas de dibujo",
+      texto: "Nerea dibuja la pieza a tamaño real, la ajusta a la forma del brazo y la pasa a papel de calco. Se aprueba por WhatsApp.",
+      material: "Papel térmico y stencil" },
+    { nombre: "Sesión 1 · Línea", estado: "linea", cuando: "Día 20", duracion: "3 h 30 min",
+      texto: "Calco sobre la piel y todo el contorno. La línea es lo que sostiene el tatuaje durante años, así que va sin prisa.",
+      material: "Aguja 9RL, tinta negra, máquina rotativa" },
+    { nombre: "Sesión 2 · Sombras", estado: "sombra", cuando: "Día 41", duracion: "4 h",
+      texto: "Con la línea ya curada: sombreado en negro con punteado y látigo para dar volumen a la serpiente y a la hoja.",
+      material: "Magnum 13M y 7RS, negro diluido" },
+    { nombre: "Sesión 3 · Color", estado: "color", cuando: "Día 62", duracion: "3 h",
+      texto: "Rojo sólido y último repaso de negros. Film protector, foto de la pieza recién hecha y ficha de cuidados.",
+      material: "Magnum 15M, rojo tradicional" },
+    { nombre: "Curado", estado: "curado", cuando: "Día 104", duracion: "Revisión de 20 min",
+      texto: "Seis semanas después: revisión gratis, retoque de algún punto si hace falta y fotos finales con la piel ya asentada.",
+      material: "Retoque incluido en el precio" }
+  ]
+};
+
+/* ---- UN DÍA DE SESIÓN (hora, qué pasa) --------------------------------- */
+const DIA_SESION = [
+  ["10:45", "Llegas, firmas el consentimiento y montamos el puesto delante de ti."],
+  ["11:00", "Colocamos el calco. Lo miras en el espejo y lo movemos las veces que haga falta."],
+  ["11:20", "Primera línea. Los primeros minutos son los que más se notan; luego el cuerpo se acostumbra."],
+  ["12:45", "Descanso: agua, algo dulce y estirar las piernas."],
+  ["13:00", "Seguimos. Te avisamos antes de cada zona sensible."],
+  ["14:30", "Limpieza, film protector y foto de la pieza."],
+  ["14:40", "Te vas con la ficha de cuidados y la siguiente fecha apuntada."]
+];
+
+/* ---- MAPA DEL DOLOR (dolor de 1 a 5) ----------------------------------- */
+const ZONAS_DOLOR = [
+  { id: "antebrazo",   nombre: "Antebrazo",   dolor: 2, curacion: "2–3 semanas", ideal: "Fine line, tradicional, lettering", nota: "La zona más agradecida para un primer tatuaje: se ve, se cuida fácil y molesta poco." },
+  { id: "brazo",       nombre: "Brazo",       dolor: 2, curacion: "2–3 semanas", ideal: "Tradicional, realismo, blackwork", nota: "Mucha superficie y buena piel. La cara interna se nota algo más." },
+  { id: "hombro",      nombre: "Hombro",      dolor: 2, curacion: "2–3 semanas", ideal: "Piezas redondas, rosas, mandalas", nota: "Curvo y estable: perfecto para diseños que abrazan la forma." },
+  { id: "mano",        nombre: "Mano",        dolor: 4, curacion: "3–4 semanas", ideal: "Lettering, símbolos pequeños", nota: "Hueso cerca y mucho roce: necesita retoque más a menudo." },
+  { id: "cuello",      nombre: "Cuello",      dolor: 4, curacion: "2–3 semanas", ideal: "Piezas pequeñas, lettering", nota: "Piel fina y zona visible. Lo hablamos con calma antes." },
+  { id: "clavicula",   nombre: "Clavícula",   dolor: 3, curacion: "2–3 semanas", ideal: "Fine line, frases, ramas", nota: "Sobre el hueso vibra más, pero las sesiones son cortas." },
+  { id: "pecho",       nombre: "Pecho",       dolor: 3, curacion: "2–3 semanas", ideal: "Golondrinas, piezas simétricas", nota: "Clásico de tradicional. Más intenso cerca del esternón." },
+  { id: "esternon",    nombre: "Esternón",    dolor: 4, curacion: "3 semanas",   ideal: "Ornamental, polillas, blackwork", nota: "Hueso justo debajo: se nota, pero queda espectacular." },
+  { id: "costillas",   nombre: "Costillas",   dolor: 5, curacion: "3–4 semanas", ideal: "Fine line, botánica, frases", nota: "De las que más duelen. Mejor en sesiones cortas y con descansos." },
+  { id: "abdomen",     nombre: "Abdomen",     dolor: 3, curacion: "3 semanas",   ideal: "Lettering, piezas medianas", nota: "Piel que se mueve mucho: elegimos bien el tamaño." },
+  { id: "muslo",       nombre: "Muslo",       dolor: 2, curacion: "2–3 semanas", ideal: "Piezas grandes, realismo", nota: "Lienzo enorme y poco sensible en la parte de fuera." },
+  { id: "rodilla",     nombre: "Rodilla",     dolor: 5, curacion: "4 semanas",   ideal: "Ornamental, telarañas", nota: "Dolor alto y curación lenta por el movimiento." },
+  { id: "pantorrilla", nombre: "Pantorrilla", dolor: 2, curacion: "2–3 semanas", ideal: "Dagas, serpientes, verticales", nota: "Músculo que protege: de las zonas más cómodas." },
+  { id: "pie",         nombre: "Tobillo y pie", dolor: 4, curacion: "3–4 semanas", ideal: "Piezas pequeñas, fine line", nota: "Poco músculo y mucho roce con el calzado." }
+];
+
+/* ---- ARTISTAS INVITADOS ------------------------------------------------- */
+const INVITADOS = [
+  { nombre: "Marta Riba",    desde: "Barcelona",        fechas: "3–8 nov",    estilo: "Blackwork ornamental", huecos: 4 },
+  { nombre: "Tomás Abreu",   desde: "Lisboa",           fechas: "17–22 nov",  estilo: "Tradicional portugués", huecos: 2 },
+  { nombre: "Ximena Robles", desde: "Ciudad de México", fechas: "1–6 dic",    estilo: "Fine line y lettering", huecos: 0 }
+];
+
+/* ---- SERVICIOS Y PRECIOS ----------------------------------------------- */
+const SERVICIOS = [
+  { nombre: "Tatuaje a medida",     precio: "desde 60 €",   detalle: "Diseño propio para tu cuerpo, con presupuesto cerrado antes de empezar." },
+  { nombre: "Flash",                precio: "precio cerrado", detalle: "Diseños listos de la hoja del estudio. Cada uno se tatúa una vez." },
+  { nombre: "Cover-up y arreglos",  precio: "desde 150 €",  detalle: "Tapamos o rehacemos un tatuaje antiguo. La valoración es gratis." },
+  { nombre: "Crema anestésica",     precio: "15 €",         detalle: "Anestesia tópica para zonas sensibles. Se pone 45 minutos antes." },
+  { nombre: "Taller de iniciación", precio: "190 €",        detalle: "Un sábado al mes: higiene, máquina y práctica en piel sintética. 6 plazas." },
+  { nombre: "Bono regalo",          precio: "desde 50 €",   detalle: "Para regalar tinta. Válido durante un año con cualquier artista." }
+];
+
+/* ---- RESEÑAS (clientes inventados para la demo: solo iniciales) -------- */
+const RESENAS = [
+  { texto: "Llegué con una foto borrosa y salí con la golondrina que tenía en la cabeza desde hace años.", quien: "L. M.", pieza: "Golondrina en antebrazo" },
+  { texto: "Me explicaron cada paso y me dejaron mover el calco tres veces. Ni una mala cara.", quien: "A. R.", pieza: "Rosa en el brazo" },
+  { texto: "Mi primer tatuaje. Pensé que iba a doler muchísimo y al final hasta me dormí un rato.", quien: "C. P.", pieza: "Helecho en costillas" },
+  { texto: "Taparon un tribal de 2004 que odiaba. Ahora es una serpiente y no se ve nada debajo.", quien: "J. G.", pieza: "Cover-up en pierna" },
+  { texto: "Limpísimo. Abrieron las agujas delante de mí y me dieron la ficha de cuidados impresa.", quien: "M. S.", pieza: "Luna en clavícula" },
+  { texto: "Cogí un flash de la hoja y en una hora estaba hecho. Precio cerrado, sin sorpresas.", quien: "D. F.", pieza: "Flash de rayo" },
+  { texto: "Tres sesiones para el antebrazo y en todas me trataron como si fuera la primera.", quien: "R. T.", pieza: "Serpiente y daga" },
+  { texto: "Fui con mi madre a tatuarnos lo mismo. Nos hicieron el diseño a las dos a medida.", quien: "S. y N.", pieza: "Lettering en muñeca" }
+];
+/* ======================= FIN DE LOS DATOS ================================ */
+</script>
+
+<!-- Tipografías: Shrikhand (rótulo de titulares) + Archivo (texto) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&family=Shrikhand&display=swap" rel="stylesheet">
+
+<style>
+/* ==========================================================================
+   ESTILOS · Los colores están en variables. El acento se toma de
+   ESTUDIO.acento (arriba); el resto se cambia aquí.
+   ========================================================================== */
+:root {
+  --acento: #F5174E;            /* se sobrescribe con ESTUDIO.acento */
+  --sobre-acento: #FFFFFF;      /* texto encima del rojo */
+  --acento-texto: color-mix(in oklab, var(--acento) 80%, #000);  /* rojo para texto sobre papel */
+  --papel: #FFF1D2;             /* fondo: papel de calco frío */
+  --papel-2: #FFE08A;           /* escalón de tono */
+  --papel-3: #FFC9D6;
+  --hoja: #FFFDF6;              /* hojas de dibujo */
+  --tinta: #151413;             /* texto */
+  --tinta-2: #4A4743;           /* notas secundarias */
+  --calco: #6D28FF;             /* violeta del stencil térmico (solo dibujos sin entintar) */
+  --pared: #2B1BD1;             /* campo oscuro de la hoja de flash */
+  --sobre-pared: #EDEBE5;
+  --f-display: "Shrikhand", "Archivo", Georgia, serif;
+  --f-texto: "Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --m: clamp(16px, 2.8vw, 44px);              /* margen lateral */
+  --sec: clamp(96px, 12vw, 190px);            /* aire entre secciones */
+  --ease: cubic-bezier(.16, .84, .24, 1);
+  --t-xl: clamp(3rem, 7.6vw, 8.4rem);         /* titular portada */
+  --t-l: clamp(2.6rem, 6vw, 6.2rem);          /* titulares de sección */
+  --t-m: clamp(1.35rem, 2.1vw, 1.95rem);      /* frases destacadas */
+  --t-s: 1.125rem;                            /* texto */
+  --t-xs: .95rem;                             /* notas */
+  --turquesa: #00D1B2;
+  --amarillo: #FFD21F;
+  --violeta: #6D28FF;
+  --rosa: #FF6FA5;
+  --s-ses: #BDF5EA; --s-est: #FFC4D8; --s-cli: #D8CCFF;
+  color-scheme: light dark;
+}
+/* Modo oscuro: la pared del estudio de noche. Los dibujos siguen en papel. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --papel: #1B0F3A;
+    --papel-2: #2A1660;
+    --papel-3: #3C2290;
+    --hoja: #FFF6E2;
+    --tinta: #FFF3DC;
+    --tinta-2: #D7CCF5;
+    --pared: #12062E;
+    --sobre-pared: #FFF3DC;
+    --s-ses: #0F4A44; --s-est: #5A1740; --s-cli: #33207A;
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--papel); color: var(--tinta);
+  font-family: var(--f-texto); font-size: var(--t-s); line-height: 1.55;
+  font-variation-settings: "wdth" 100; overflow-x: hidden;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-underline-offset: .2em; text-decoration-thickness: 2px; }
+button, input, select, textarea { font: inherit; color: inherit; line-height: 1.35; }
+button { cursor: pointer; }
+::selection { background: var(--acento); color: var(--sobre-acento); }
+:focus-visible { outline: 3px solid var(--acento); outline-offset: 3px; }
+html { scrollbar-color: var(--tinta-2) var(--papel); }
+input, textarea, select { caret-color: var(--acento); }
+.sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.saltar { position: absolute; left: var(--m); top: -60px; z-index: 100; background: var(--tinta); color: var(--papel); padding: 10px 16px; }
+.saltar:focus { top: 10px; }
+
+h1, h2, h3 { font-family: var(--f-display); font-weight: 400; line-height: .98; letter-spacing: -.012em; margin: 0; text-wrap: balance; }
+h2 { font-size: var(--t-l); }
+p { margin: 0; }
+.envoltura { padding-inline: var(--m); max-width: 1680px; margin-inline: auto; }
+.seccion { padding-block: var(--sec); }
+.texto-largo { max-width: 62ch; }
+.nota { font-size: var(--t-xs); color: var(--tinta-2); }
+
+/* ---- Botones ---------------------------------------------------------- */
+.boton {
+  display: inline-flex; align-items: center; gap: .6em; justify-content: center;
+  background: var(--acento); color: var(--sobre-acento); border: 0; border-radius: 0;
+  padding: .95em 1.4em; font-weight: 700; font-size: 1.05rem; text-decoration: none;
+  font-variation-settings: "wdth" 104;
+  transition: transform .25s var(--ease), background-color .25s;
+}
+.boton:hover { background: color-mix(in oklab, var(--acento) 84%, #000); }
+.boton:active { transform: translateY(2px) scale(.98); }
+.boton svg { width: 1.1em; height: 1.1em; transition: transform .3s var(--ease); }
+.boton:hover svg { transform: translateX(4px); }
+.boton--tinta { background: var(--tinta); color: var(--papel); }
+.boton--tinta:hover { background: color-mix(in oklab, var(--tinta) 82%, var(--acento)); }
+.enlace-flecha { font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; display: inline-flex; gap: .4em; align-items: center; }
+.enlace-flecha:hover { color: var(--acento); }
+
+/* ---- Cabecera --------------------------------------------------------- */
+.cabecera {
+  position: sticky; top: 0; z-index: 50; background: var(--papel);
+  transition: background-color .3s;
+}
+.cabecera.con-scroll { background: var(--papel-2); }
+.cabecera__fila { display: flex; align-items: center; gap: 28px; height: 68px; }
+.logo { font-family: var(--f-display); font-size: 1.9rem; text-decoration: none; line-height: 1; margin-right: auto; display: inline-flex; align-items: baseline; gap: .12em; }
+.logo i { width: .3em; height: .3em; background: var(--acento); display: inline-block; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); }
+.nav { display: flex; gap: 26px; }
+.nav a { text-decoration: none; font-weight: 600; font-size: 1.02rem; padding: 6px 0; background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .35s var(--ease); }
+.nav a:hover { background-size: 100% 2px; }
+.cabecera .boton { padding: .7em 1.15em; font-size: 1rem; }
+.menu-boton { display: none; background: none; border: 0; padding: 10px 4px; font-weight: 700; }
+@media (max-width: 860px) {
+  .menu-boton { display: block; }
+  .nav { display: none; position: absolute; left: 0; right: 0; top: 68px; background: var(--papel-2); flex-direction: column; gap: 0; padding: 8px var(--m) 24px; }
+  .nav a { font-family: var(--f-display); font-size: 2.2rem; padding: 10px 0; background: none; }
+  .cabecera.abierta .nav { display: flex; }
+  .cabecera__fila { gap: 14px; }
+}
+
+/* ---- Portada ---------------------------------------------------------- */
+.portada { padding-top: clamp(28px, 4vw, 64px); padding-bottom: clamp(48px, 6vw, 96px); }
+.portada__rejilla { display: grid; grid-template-columns: minmax(0, 1.42fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 72px); align-items: center; min-height: calc(100svh - 68px - clamp(28px, 4vw, 64px) - clamp(48px, 6vw, 96px)); }
+.portada h1 { font-size: var(--t-xl); line-height: .96; }
+.linea { display: block; position: relative; white-space: nowrap; padding-bottom: .04em; }
+.linea__calco { position: absolute; inset: 0; color: transparent; -webkit-text-stroke: 1.3px var(--calco); transform: translate(.035em, .03em); pointer-events: none; opacity: 0; }
+.linea__tinta { display: inline-block; position: relative; }
+.portada__texto { margin-top: clamp(24px, 3vw, 44px); display: grid; gap: 22px; max-width: 40rem; }
+.portada__frase { font-size: var(--t-m); line-height: 1.3; font-weight: 500; }
+.portada__acciones { display: flex; flex-wrap: wrap; gap: 18px 26px; align-items: center; }
+.agenda {
+  display: inline-flex; align-items: center; gap: .55em; justify-self: start;
+  color: var(--acento); font-weight: 800; font-size: 1.05rem; padding: .45em .8em;
+  border: 3px solid currentColor; transform: rotate(-2.5deg); filter: url(#goma);
+  font-variation-settings: "wdth" 110;
+}
+@media (prefers-color-scheme: dark) { .agenda { color: color-mix(in oklab, var(--acento) 70%, white); } }
+.agenda b { width: .55em; height: .55em; border-radius: 50%; background: currentColor; display: inline-block; }
+.ubicacion { font-weight: 600; }
+.portada__dibujo { position: relative; justify-self: center; width: 100%; max-width: 560px; }
+.dibujo-hero { width: 100%; height: auto; max-height: calc(100svh - 160px); touch-action: pan-y; }
+.portada__pista { margin-top: 10px; text-align: center; font-size: var(--t-xs); color: var(--tinta-2); min-height: 1.5em; transition: color .3s; }
+@media (prefers-color-scheme: dark) {
+  .portada__dibujo { background: var(--hoja); padding: clamp(14px, 2vw, 26px); }
+  .portada__pista { color: #4A4743; }
+}
+@media (max-width: 820px) {
+  .portada__rejilla { grid-template-columns: 1fr; min-height: 0; }
+  .portada__dibujo { max-width: 420px; }
+  .dibujo-hero { max-height: 62svh; }
+}
+
+/* ---- Dibujos SVG (flash generado) ------------------------------------- */
+.dib { --d-line: #161514; --d-red: var(--acento); --d-bg: var(--hoja); width: 100%; height: auto; overflow: visible; }
+.dib .o  { fill: none; stroke: var(--d-line); stroke-width: 4.2; stroke-linecap: round; stroke-linejoin: round; }
+.dib .r  { fill: var(--d-red); }
+.dib .k  { fill: var(--d-line); }
+.dib .p  { fill: var(--d-bg); }
+.dib .s  { fill: url(#punteado); }
+.dib .op { fill: none; stroke: var(--d-bg); stroke-width: 2.4; stroke-linecap: round; }
+.dib .tb { fill: none; stroke: var(--d-line); stroke-width: 26; stroke-linecap: round; stroke-linejoin: round; }
+.dib .tf { fill: none; stroke: var(--d-red); stroke-width: 17; stroke-linecap: round; stroke-linejoin: round; }
+.dib .tb.fino { stroke-width: 11; } .dib .tf.fino { stroke-width: 5; }
+.dib .td { fill: none; stroke: var(--d-line); stroke-width: 2.2; stroke-dasharray: 2 8; stroke-linecap: round; }
+.dib .t  { fill: var(--d-line); font-family: var(--f-display); }
+.dib .tr { fill: var(--d-red); font-family: var(--f-display); }
+/* Fine line: línea fina, sin rellenos de color */
+.e-fine .o { stroke-width: 1.7; }
+.e-fine .r, .e-fine .k { fill: var(--d-bg); }
+.e-fine .s, .e-fine .tr { fill: none; }
+.e-fine .op { stroke: var(--d-line); stroke-width: 1.2; }
+.e-fine .tb { stroke-width: 15; } .e-fine .tf { stroke: var(--d-bg); stroke-width: 12; }
+.e-fine .tb.fino { stroke-width: 7; } .e-fine .tf.fino { stroke-width: 4; }
+.e-fine .td { stroke-width: 1.2; }
+.e-fine .dot { fill: var(--d-line); }
+/* Blackwork: negro sólido y rayado, sin rojo */
+.e-black .o { stroke-width: 4.8; }
+.e-black .r, .e-black .tr { fill: url(#rayado); }
+.e-black .s { fill: var(--d-line); }
+.e-black .tf { stroke: var(--d-line); }
+.e-black .td { stroke: var(--d-bg); stroke-width: 3; }
+/* Realismo: sombreado en puntos */
+.e-real .o { stroke-width: 1.5; }
+.e-real .r { fill: url(#punteado); }
+.e-real .k { fill: url(#punteado-denso); }
+.e-real .s { fill: url(#punteado-denso); }
+.e-real .tr { fill: url(#punteado); }
+.e-real .tf { stroke: url(#punteado); }
+/* Capa de calco (stencil): violeta, temblorosa, desplazada */
+.dib .calco { filter: url(#temblor); }
+.dib .calco .o, .dib .calco .op { stroke: var(--calco); stroke-width: 1.6; }
+.dib .calco .r, .dib .calco .k, .dib .calco .p { fill: var(--d-bg); }
+.dib .calco .s, .dib .calco .td, .dib .calco .dot { display: none; }
+.dib .calco .tb { stroke: var(--calco); stroke-width: 24; }
+.dib .calco .tf { stroke: var(--d-bg); stroke-width: 20.6; }
+.dib .calco .tb.fino { stroke-width: 10; } .dib .calco .tf.fino { stroke-width: 6.8; }
+.dib .calco .t, .dib .calco .tr { fill: none; stroke: var(--calco); stroke-width: .8; }
+/* Entintado al aparecer */
+.js .entintable .tinta { clip-path: inset(0 0 100% 0); transition: clip-path 1.3s var(--ease) .15s; }
+.js .entintable .calco { transition: opacity .8s .9s; }
+.js .in .entintable .tinta, .js .entintable.in .tinta { clip-path: inset(-4% -4% -4% -4%); }
+.js .in .entintable .calco, .js .entintable.in .calco { opacity: .1; }
+.dib.entintado .calco { opacity: .1; }
+
+/* ---- Bloques de sección ----------------------------------------------- */
+.cabeza { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 24px 64px; align-items: end; margin-bottom: clamp(36px, 5vw, 72px); }
+.cabeza p { font-size: var(--t-m); line-height: 1.3; font-weight: 500; max-width: 30ch; }
+@media (max-width: 820px) { .cabeza { grid-template-columns: 1fr; } }
+
+/* ---- Trabajos --------------------------------------------------------- */
+.filtros { display: grid; gap: 14px; margin-bottom: clamp(32px, 4vw, 56px); }
+.filtros__fila { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.filtros__nombre { font-weight: 700; margin-right: 8px; min-width: 4.5em; }
+.chip {
+  background: var(--papel-2); border: 0; padding: .55em 1em; font-weight: 600; border-radius: 0;
+  display: inline-flex; gap: .45em; align-items: baseline; transition: background-color .2s, color .2s, transform .2s var(--ease);
+}
+.chip small { font-size: .8em; font-weight: 700; opacity: .7; font-variant-numeric: tabular-nums; }
+.chip:hover { background: var(--papel-3); }
+.chip:active { transform: scale(.96); }
+.chip[aria-pressed="true"] { background: var(--tinta); color: var(--papel); }
+.chip[disabled] { opacity: .38; cursor: not-allowed; }
+@media (max-width: 700px) {
+  .filtros__fila { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--m) * -1); padding-inline: var(--m); scrollbar-width: none; }
+  .filtros__fila::-webkit-scrollbar { display: none; }
+  .chip { flex: none; }
+}
+.galeria { columns: 4 260px; column-gap: clamp(18px, 2.2vw, 36px); }
+.pieza { break-inside: avoid; margin-bottom: clamp(28px, 3vw, 48px); display: grid; gap: 6px; }
+.pieza__hoja {
+  display: block; width: 100%; border: 0; padding: clamp(12px, 1.4vw, 20px); background: var(--hoja);
+  transform: rotate(var(--rot, 0deg)); transition: transform .45s var(--ease), background-color .3s;
+}
+.pieza__hoja:hover { transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.03); transition: transform .18s ease-out; }
+.pieza:nth-child(5n+2) .pieza__hoja { padding-block: clamp(30px, 4vw, 64px); }
+.pieza:nth-child(5n+4) .pieza__hoja { padding-block: clamp(22px, 2.6vw, 40px) clamp(12px, 1.4vw, 20px); }
+.pieza__hoja img { width: 100%; aspect-ratio: 240 / 290; object-fit: cover; }
+.pieza__titulo { font-family: var(--f-texto); font-weight: 750; font-size: 1.15rem; line-height: 1.25; margin-top: 10px; letter-spacing: 0; }
+.pieza__meta { color: var(--tinta-2); font-size: var(--t-xs); margin-top: 8px; }
+.js .pieza { opacity: 0; transform: translateY(26px); transition: opacity .7s var(--ease) var(--d, 0ms), transform .9s var(--ease) var(--d, 0ms); }
+.js .pieza.in { opacity: 1; transform: none; }
+.galeria__vacio { column-span: all; padding: 48px 0; font-size: var(--t-m); }
+@media (max-width: 700px) {
+  .galeria { display: flex; columns: auto; gap: 18px; overflow-x: auto; scroll-snap-type: x mandatory; margin-inline: calc(var(--m) * -1); padding: 4px var(--m) 18px; scrollbar-width: thin; }
+  .pieza { flex: 0 0 76vw; scroll-snap-align: center; margin: 0; }
+  .galeria__vacio { flex: 1 0 100%; }
+}
+.galeria__pista { display: none; }
+@media (max-width: 700px) { .galeria__pista { display: block; margin-top: 4px; } }
+
+::view-transition-group(*) { animation-duration: .5s; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+
+/* Vista previa que sigue al cursor */
+.previa {
+  position: fixed; left: 0; top: 0; z-index: 70; width: 300px; pointer-events: none;
+  background: var(--hoja); padding: 18px 18px 14px; color: #161514;
+  box-shadow: 0 18px 40px -12px rgba(0,0,0,.35), 0 4px 10px rgba(0,0,0,.12);
+  opacity: 0; transform: translate3d(-999px, -999px, 0) scale(.92); transition: opacity .2s;
+}
+.previa.visible { opacity: 1; }
+.previa p { font-size: .9rem; margin-top: 8px; font-weight: 600; }
+@media (hover: none), (pointer: coarse) { .previa { display: none; } }
+
+/* Lightbox */
+.lightbox { width: min(1180px, 100vw - 24px); max-width: none; max-height: calc(100dvh - 24px); padding: 0; border: 0; background: var(--papel); color: var(--tinta); overflow: auto; }
+.lightbox::backdrop { background: rgba(10, 9, 8, .86); }
+.lightbox__dentro { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); min-height: min(760px, calc(100dvh - 24px)); }
+.lightbox__hoja { background: var(--hoja); display: grid; place-items: center; padding: clamp(20px, 4vw, 56px); touch-action: pan-y; }
+.lightbox__hoja .dib, .lightbox__hoja img { max-height: calc(100dvh - 120px); width: auto; max-width: 100%; }
+.lightbox__info { padding: clamp(24px, 4vw, 56px); display: flex; flex-direction: column; gap: 22px; }
+.lightbox__cerrar { align-self: flex-end; background: none; border: 0; font-weight: 700; padding: 6px 0; display: inline-flex; gap: 8px; align-items: center; }
+.lightbox h2 { font-size: clamp(2.2rem, 4vw, 3.8rem); }
+.lightbox dl { display: grid; grid-template-columns: auto 1fr; gap: 10px 24px; margin: 0; }
+.lightbox dt { color: var(--tinta-2); }
+.lightbox dd { margin: 0; font-weight: 700; }
+.lightbox__nav { margin-top: auto; display: flex; align-items: center; gap: 10px; }
+.lightbox__nav span { margin-inline: auto; font-variant-numeric: tabular-nums; color: var(--tinta-2); }
+.flecha { width: 52px; height: 52px; display: grid; place-items: center; background: var(--papel-2); border: 0; transition: background-color .2s, transform .2s var(--ease); }
+.flecha:hover { background: var(--papel-3); }
+.flecha:active { transform: scale(.94); }
+.flecha svg { width: 22px; height: 22px; }
+@media (max-width: 760px) {
+  .lightbox { width: 100vw; max-height: 100dvh; height: 100dvh; }
+  .lightbox__dentro { grid-template-columns: 1fr; min-height: 100%; }
+  .lightbox__hoja { padding: 20px 20px 12px; }
+  .lightbox__hoja .dib { max-height: 52dvh; }
+  .lightbox__info { padding: 20px var(--m) 28px; gap: 16px; }
+  .lightbox__cerrar { position: absolute; top: 10px; right: 14px; background: var(--hoja); color: #161514; padding: 8px 12px; z-index: 2; }
+}
+
+/* ---- Artistas --------------------------------------------------------- */
+.artistas { padding-top: var(--sec); }
+.artista { padding-block: clamp(56px, 7vw, 110px); }
+.artista:nth-child(odd) { background: var(--papel-2); }
+.artista__rejilla { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.artista:nth-child(even) .artista__rejilla { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, .8fr); }
+.artista:nth-child(even) .artista__sello { order: 3; }
+.artista:nth-child(even) .artista__obra { order: 1; }
+.artista__sello { color: var(--acento); max-width: 260px; width: 100%; }
+@media (prefers-color-scheme: dark) { .artista__sello { color: color-mix(in oklab, var(--acento) 72%, white); } }
+/* El sello es de una sola tinta: el dibujo interior toma el color del sello */
+.sello .o, .sello .op { stroke: currentColor; stroke-width: 6; }
+.sello .k { fill: currentColor; }
+.sello .r, .sello .p { fill: none; }
+.sello .s, .sello .td { display: none; }
+.sello .tb { stroke: currentColor; } .sello .tf { stroke: none; }
+.artista__sello .sello { transform: rotate(var(--rot, -6deg)); transition: transform .6s var(--ease); }
+.artista:hover .sello { transform: rotate(0deg); }
+.artista__foto { aspect-ratio: 4/5; object-fit: cover; width: 100%; }
+.artista h3 { font-size: clamp(2.3rem, 3.7vw, 4.2rem); margin-bottom: 14px; white-space: nowrap; }
+.artista__esp { font-weight: 700; font-size: 1.15rem; }
+.artista blockquote { margin: 22px 0 26px; font-size: var(--t-m); line-height: 1.3; font-weight: 500; max-width: 28ch; }
+.artista__datos { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; margin-bottom: 28px; }
+.artista__estilos { display: flex; gap: 8px; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+.artista__estilos li { background: var(--papel); padding: .3em .8em; border-radius: 0; font-weight: 600; font-size: .95rem; }
+.artista:nth-child(even) .artista__estilos li { background: var(--papel-2); }
+.artista__obra { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.artista__obra button { border: 0; padding: 8px; background: var(--hoja); transition: transform .35s var(--ease); }
+.artista__obra button:nth-child(2) { transform: translateY(18px) rotate(1.5deg); }
+.artista__obra button:hover { transform: translateY(-4px) rotate(-1deg); }
+.artista__obra p { grid-column: 1 / -1; margin-top: 22px; }
+@media (max-width: 980px) {
+  .artista__rejilla, .artista:nth-child(even) .artista__rejilla { grid-template-columns: 1fr 1.6fr; }
+  .artista__obra, .artista:nth-child(even) .artista__obra { grid-column: 1 / -1; order: 3; }
+  .artista:nth-child(even) .artista__sello { order: 0; }
+}
+@media (max-width: 600px) {
+  .artista__rejilla, .artista:nth-child(even) .artista__rejilla { grid-template-columns: 1fr; }
+  .artista__sello { max-width: 150px; }
+}
+
+/* ---- Flash ------------------------------------------------------------ */
+.flash { background: var(--pared); color: var(--sobre-pared); }
+.flash .cabeza p { color: var(--sobre-pared); }
+.hoja-flash { background: var(--hoja); color: #161514; padding: clamp(22px, 4vw, 64px); display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 3.4vw, 56px) clamp(18px, 3vw, 48px); }
+.flash-item { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+.flash-item .dib { max-width: 240px; transition: transform .45s var(--ease); }
+.flash-item:hover .dib { transform: rotate(-2deg) scale(1.03); }
+.flash-item__nombre { font-family: var(--f-display); font-size: clamp(1.4rem, 2vw, 1.9rem); line-height: 1.1; margin-top: 6px; }
+.flash-item__precio { font-family: var(--f-display); color: var(--acento-texto); font-size: clamp(2rem, 3.4vw, 3.2rem); line-height: 1; }
+.flash-item__meta { font-size: .95rem; color: #4A4743; }
+.flash-item__boton { margin-top: 12px; }
+.flash-item.reservado .dib, .flash-item.reservado .flash-item__precio { opacity: .4; }
+.estampa {
+  position: absolute; top: 26%; left: 50%; transform: translate(-50%, -50%) rotate(-14deg);
+  color: var(--acento-texto); border: 4px solid currentColor; padding: .15em .5em .2em;
+  font-family: var(--f-display); font-size: clamp(1.5rem, 2.6vw, 2.3rem); filter: url(#goma); pointer-events: none; white-space: nowrap;
+}
+.libre { display: inline-flex; gap: .4em; align-items: center; font-weight: 700; font-size: .95rem; }
+.libre::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: #1E7B4A; }
+@media (max-width: 760px) {
+  .hoja-flash { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .flash-item__boton { font-size: .92rem; padding: .8em 1em; }
+}
+
+/* ---- Cómo funciona ---------------------------------------------------- */
+.pasos { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: clamp(16px, 2.4vw, 40px); }
+.paso { display: grid; gap: 14px; align-content: start; }
+.paso__hoja { background: var(--hoja); padding: 14px; aspect-ratio: 1; display: grid; place-items: center; }
+.paso:nth-child(even) .paso__hoja { transform: translateY(28px); }
+.paso:nth-child(even) .paso__texto { transform: translateY(28px); }
+.paso__texto { padding-top: 14px; }
+.paso h3 { font-size: clamp(1.9rem, 2.8vw, 2.8rem); margin-bottom: 8px; }
+.paso p { font-size: 1.02rem; }
+.boceto .o { stroke: #7B7870; stroke-width: 1.6; stroke-dasharray: 10 3 3 3; }
+.boceto .r, .boceto .k, .boceto .p { fill: var(--d-bg); }
+.boceto .s { display: none; }
+.boceto { filter: url(#temblor-fuerte); }
+.boceto .tb { stroke: #7B7870; stroke-width: 19; } .boceto .tf { stroke: var(--d-bg); stroke-width: 16; } .boceto .td { display: none; } .boceto .dot { fill: #7B7870; }
+.guia { fill: none; stroke: #A8A59D; stroke-width: 1; stroke-dasharray: 3 5; }
+.film { fill: rgba(150, 185, 205, .22); stroke: #8EA7B6; stroke-width: 2.4; }
+.brillo { fill: #fff; opacity: .5; }
+@media (max-width: 980px) {
+  .pasos { grid-template-columns: 1fr; gap: 28px; }
+  .paso { grid-template-columns: minmax(110px, 34%) 1fr; gap: 20px; align-items: center; }
+  .paso:nth-child(even) .paso__hoja, .paso:nth-child(even) .paso__texto { transform: none; }
+}
+
+/* ---- Estudio ---------------------------------------------------------- */
+.estudio { background: var(--papel-2); }
+.estudio__rejilla { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(36px, 6vw, 110px); align-items: start; }
+.estudio h2 { margin-bottom: clamp(24px, 3vw, 40px); }
+.estudio__filo { font-size: var(--t-m); line-height: 1.35; font-weight: 500; max-width: 34ch; margin-bottom: 22px; }
+.datos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; margin-top: clamp(32px, 4vw, 56px); }
+.datos h3 { font-family: var(--f-texto); font-size: 1.05rem; font-weight: 800; margin-bottom: 8px; letter-spacing: 0; }
+.datos dl { margin: 0; display: grid; gap: 4px; }
+.datos dl div { display: flex; justify-content: space-between; gap: 16px; }
+.datos dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 600; text-align: right; }
+.mapa { display: block; background: var(--hoja); text-decoration: none; color: #161514; position: relative; overflow: hidden; }
+.mapa svg { width: 100%; height: auto; transition: transform 1.2s var(--ease); }
+.mapa:hover svg { transform: scale(1.04); }
+.mapa__pie { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px; font-weight: 700; background: var(--hoja); position: relative; }
+.mapa .manzana { fill: #DCDBD3; }
+.mapa .avenida { fill: #F8F7F3; }
+.mapa .rotulo { font-family: var(--f-texto); font-size: 11px; font-weight: 700; fill: #6B6862; }
+.mapa .mercado { fill: #C9C7BE; }
+@media (max-width: 860px) { .estudio__rejilla { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .datos { grid-template-columns: 1fr; } }
+
+/* ---- Cuidados y preguntas --------------------------------------------- */
+.cuidados__rejilla { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(36px, 6vw, 110px); align-items: start; }
+.ficha-cuidados { background: var(--hoja); color: #161514; padding: clamp(24px, 3vw, 40px); margin-top: clamp(28px, 3vw, 44px); transform: rotate(-1deg); }
+.ficha-cuidados h3 { font-size: clamp(1.8rem, 2.6vw, 2.4rem); color: #161514; margin-bottom: 18px; }
+.ficha-cuidados dl { margin: 0; display: grid; gap: 16px; }
+.ficha-cuidados dt { font-weight: 800; }
+.ficha-cuidados dd { margin: 2px 0 0; }
+.preguntas { display: grid; gap: 8px; }
+.pregunta { background: var(--papel-2); }
+.pregunta summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 22px 24px; font-weight: 700; font-size: 1.2rem; }
+.pregunta summary::-webkit-details-marker { display: none; }
+.pregunta summary i { flex: none; width: 34px; height: 34px; position: relative; background: var(--papel); border-radius: 0; transition: transform .35s var(--ease), background-color .2s; }
+.pregunta summary i::before, .pregunta summary i::after { content: ""; position: absolute; left: 50%; top: 50%; width: 14px; height: 2.5px; background: currentColor; transform: translate(-50%, -50%); }
+.pregunta summary i::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .35s var(--ease); }
+.pregunta[open] summary i { background: var(--tinta); color: var(--papel); }
+.pregunta[open] summary i::after { transform: translate(-50%, -50%) rotate(0deg); }
+.pregunta summary:hover i { transform: rotate(90deg); }
+.pregunta__resp { padding: 0 24px 24px; max-width: 60ch; }
+.pregunta[open] .pregunta__resp { animation: abre .45s var(--ease); }
+@keyframes abre { from { opacity: 0; transform: translateY(-8px); } }
+@media (max-width: 860px) { .cuidados__rejilla { grid-template-columns: 1fr; } }
+
+/* ---- Reserva ---------------------------------------------------------- */
+.reserva { background: var(--acento); color: var(--sobre-acento); }
+.reserva h2 { font-size: clamp(3rem, 6vw, 7.4rem); line-height: .92; }
+.reserva__rejilla { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(36px, 5vw, 96px); align-items: start; }
+.reserva__lado p { font-size: var(--t-m); line-height: 1.3; font-weight: 500; margin-top: 28px; max-width: 26ch; }
+.directos { display: grid; gap: 4px; margin-top: 40px; }
+.directos a { font-family: var(--f-display); font-size: clamp(1.6rem, 2.6vw, 2.4rem); text-decoration: none; display: inline-flex; align-items: center; gap: .4em; width: fit-content; }
+.directos a span { background: linear-gradient(currentColor, currentColor) 0 100% / 0 3px no-repeat; transition: background-size .35s var(--ease); }
+.directos a:hover span { background-size: 100% 3px; }
+.directos svg { width: .8em; height: .8em; }
+.ficha { background: var(--hoja); color: #161514; padding: clamp(22px, 3vw, 44px); position: relative; }
+.ficha__cabeza { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 22px; }
+.ficha__cabeza strong { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.6rem, 2.4vw, 2.2rem); }
+.ficha__cabeza span { font-size: .95rem; color: #4A4743; }
+.campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 22px; align-items: start; }
+.campo { display: grid; gap: 6px; }
+.campo--ancho { grid-column: 1 / -1; }
+.campo label, .campo legend { font-weight: 700; font-size: 1rem; padding: 0; }
+.campo input, .campo select, .campo textarea {
+  width: 100%; border: 0; border-bottom: 2px solid #161514; background: transparent; border-radius: 0;
+  padding: 10px 2px; font-size: 1.05rem; color: #161514; transition: border-color .2s, background-color .2s;
+}
+.campo select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23161514' stroke-width='2'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 4px center; background-size: 12px; padding-right: 26px; }
+.campo textarea { min-height: 96px; resize: vertical; }
+.campo input:hover, .campo select:hover, .campo textarea:hover { background-color: #EFEEE8; }
+.campo input:focus, .campo select:focus, .campo textarea:focus { outline: none; border-color: var(--acento); background-color: #EFEEE8; }
+.campo ::placeholder { color: #5C5953; }
+.campo [aria-invalid="true"] { border-color: var(--acento); }
+.error { color: #B3140D; font-weight: 700; font-size: .92rem; min-height: 0; }
+fieldset.campo { border: 0; margin: 0; padding: 0; min-width: 0; }
+.tamanos { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.tamanos label { position: relative; }
+.tamanos input { position: absolute; opacity: 0; inset: 0; }
+.tamanos span { display: inline-block; padding: .5em .9em; background: #E7E6E0; font-weight: 600; font-size: .95rem; border-radius: 0; transition: background-color .2s, color .2s; cursor: pointer; }
+.tamanos input:checked + span { background: #161514; color: #F8F7F3; }
+.tamanos input:focus-visible + span { outline: 3px solid var(--acento); outline-offset: 2px; }
+.ref { display: none; align-items: center; gap: 10px; background: #E7E6E0; padding: 10px 14px; margin-bottom: 18px; font-weight: 600; }
+.ref.visible { display: flex; }
+.ref button { margin-left: auto; background: none; border: 0; font-weight: 700; text-decoration: underline; padding: 0; color: #161514; }
+.ficha__enviar { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.ficha__enviar .boton { flex: 1 1 220px; }
+.ficha__nota { margin-top: 14px; font-size: .92rem; color: #4A4743; }
+.hecho { display: none; margin-top: 24px; background: #E7E6E0; padding: 20px; position: relative; }
+.hecho.visible { display: block; animation: abre .5s var(--ease); }
+.hecho strong { font-family: var(--f-display); font-weight: 400; font-size: 1.6rem; color: #161514; display: block; margin-bottom: 6px; }
+.hecho p { white-space: pre-line; font-size: .95rem; }
+.hecho__mensaje { margin-top: 12px; background: #F8F7F3; padding: 14px; max-height: 180px; overflow: auto; }
+.hecho button { margin-top: 12px; background: #161514; color: #F8F7F3; border: 0; padding: .6em 1em; font-weight: 700; }
+@media (max-width: 900px) { .reserva__rejilla { grid-template-columns: 1fr; } }
+@media (max-width: 520px) { .campos { grid-template-columns: 1fr; } }
+
+/* ---- Pie -------------------------------------------------------------- */
+.pie { background: var(--pared); color: var(--sobre-pared); padding-top: clamp(64px, 8vw, 120px); overflow: hidden; }
+.pie__rejilla { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; }
+.pie h3 { font-family: var(--f-texto); font-size: 1.05rem; font-weight: 800; margin-bottom: 10px; letter-spacing: 0; }
+.pie p, .pie li { color: #C9C6BE; }
+.pie ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.pie a { text-decoration: none; }
+.pie a:hover { color: var(--sobre-pared); text-decoration: underline; }
+.pie .boton { margin-top: 6px; color: var(--sobre-acento); }
+.pie__nombre { font-family: var(--f-display); line-height: .78; white-space: nowrap; margin-top: clamp(48px, 7vw, 110px); font-size: 27vw; letter-spacing: -.02em; transform: translateY(.08em); color: var(--sobre-pared); }
+.pie__nombre span { color: var(--acento); }
+.pie__legal { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 18px 26px; font-size: .88rem; color: #A9A69E; }
+@media (max-width: 860px) { .pie__rejilla { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .pie__rejilla { grid-template-columns: 1fr; } }
+
+/* ---- Barra de progreso (la aguja avanza con el scroll) ----------------- */
+.progreso { position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; pointer-events: none; }
+.progreso span { display: block; height: 100%; background: var(--acento); transform-origin: 0 50%; transform: scaleX(0); }
+
+/* ---- Cintas de temáticas ---------------------------------------------- */
+.cintas { overflow: hidden; padding-block: clamp(24px, 4vw, 56px) clamp(8px, 2vw, 24px); }
+.cinta { white-space: nowrap; overflow: hidden; margin-inline: -24px; }
+.cinta--roja { background: var(--acento); color: var(--sobre-acento); transform: rotate(-2deg); position: relative; z-index: 1; }
+.cinta--tinta { background: var(--tinta); color: var(--papel); transform: rotate(1.4deg); margin-top: -10px; }
+.cinta__pista { display: inline-flex; font-family: var(--f-display); font-size: clamp(1.5rem, 3.2vw, 2.9rem); line-height: 1.25; padding-block: .3em; animation: desfile 42s linear infinite; will-change: transform; }
+.cinta--tinta .cinta__pista { animation-duration: 52s; animation-direction: reverse; }
+.cinta__pista span { display: inline-flex; align-items: center; gap: .55em; padding-right: .55em; }
+.cinta__pista svg { width: .5em; height: .5em; flex: none; }
+.cintas:hover .cinta__pista { animation-play-state: paused; }
+@keyframes desfile { to { transform: translateX(-50%); } }
+
+/* ---- Sesiones (demo de un proyecto) ----------------------------------- */
+.sesiones { background: var(--papel-2); }
+.ses { display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: clamp(28px, 5vw, 96px); align-items: start; }
+.ses__piel { margin: 0; position: sticky; top: 92px; background: var(--hoja); color: #161514; padding: clamp(16px, 2vw, 28px); }
+.ses__brazo svg { width: 100%; height: auto; max-height: calc(100svh - 220px); margin-inline: auto; }
+.ses__pie { margin-top: 12px; font-size: .95rem; color: #4A4743; display: flex; flex-wrap: wrap; gap: 4px 14px; justify-content: space-between; }
+.ses__pie b { color: #161514; }
+.ses__pasos { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.ses__pasos button { border: 0; background: var(--papel); padding: .6em 1em; font-weight: 700; transition: background-color .25s, color .25s, transform .2s var(--ease); }
+.ses__pasos button:hover { background: var(--papel-3); }
+.ses__pasos button:active { transform: scale(.96); }
+.ses__pasos button[aria-current="step"] { background: var(--tinta); color: var(--papel); }
+.ses__pasos button.hecho-paso { box-shadow: inset 0 -4px 0 var(--acento); }
+.ses__barra { display: block; margin-bottom: 26px; }
+.ses__barra input { width: 100%; appearance: none; -webkit-appearance: none; height: 34px; background: transparent; cursor: pointer; }
+.ses__barra input::-webkit-slider-runnable-track { height: 8px; background: linear-gradient(var(--acento), var(--acento)) 0 0 / var(--avance, 0%) 100% no-repeat, var(--papel-3); }
+.ses__barra input::-moz-range-track { height: 8px; background: var(--papel-3); }
+.ses__barra input::-moz-range-progress { height: 8px; background: var(--acento); }
+.ses__barra input::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -9px; background: var(--tinta); border: 4px solid var(--acento); border-radius: 0; transform: rotate(45deg); }
+.ses__barra input::-moz-range-thumb { width: 18px; height: 18px; background: var(--tinta); border: 4px solid var(--acento); border-radius: 0; transform: rotate(45deg); }
+.ses__ficha { background: var(--hoja); color: #161514; padding: clamp(22px, 3vw, 40px); }
+.ses__ficha.cambia { animation: ficha .5s var(--ease); }
+@keyframes ficha { from { opacity: 0; transform: translateY(12px); } }
+.ses__ficha h3 { font-size: clamp(2rem, 3.4vw, 3.2rem); margin-bottom: 18px; }
+.ses__ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; margin: 0 0 18px; }
+.ses__ficha dt { color: #4A4743; }
+.ses__ficha dd { margin: 0; font-weight: 700; }
+.ses__ficha p { max-width: 52ch; }
+.ses__avance { margin-top: 22px; display: flex; align-items: center; gap: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.ses__avance span { flex: 1; height: 10px; background: #E2E1DA; position: relative; overflow: hidden; }
+.ses__avance span i { position: absolute; inset: 0; background: #161514; transform-origin: 0 50%; transition: transform .8s var(--ease); }
+.ses__resumen { margin-top: 18px; font-size: .95rem; color: #4A4743; }
+/* Estados del dibujo sobre la piel */
+.piel-dib .piel { fill: #E7C4A4; } .piel-dib .piel-sombra { fill: #D9AF8C; }
+.piel-dib { --d-bg: #E7C4A4; }
+.piel-dib .tinta { --d-bg: #fff; }
+.piel-dib .tb { stroke-width: 19; } .piel-dib .tf { stroke-width: 12; } .piel-dib .calco .tb { stroke-width: 19; } .piel-dib .calco .tf { stroke-width: 16; }
+.piel-dib .irrita .tb { stroke-width: 30; }
+.piel-dib .tinta, .piel-dib .irrita { mix-blend-mode: multiply; }
+.piel-dib .boceto, .piel-dib .calco, .piel-dib .irrita, .piel-dib .tinta { transition: opacity .7s var(--ease); }
+.piel-dib .irrita { opacity: 0; filter: url(#irritacion); }
+.piel-dib .irrita .o, .piel-dib .irrita .tb { stroke: #D2563F; stroke-width: 12; }
+.piel-dib .irrita .tf, .piel-dib .irrita .r, .piel-dib .irrita .k, .piel-dib .irrita .p, .piel-dib .irrita .s, .piel-dib .irrita .td, .piel-dib .irrita .op, .piel-dib .irrita .dot { display: none; }
+.piel-dib .boceto, .piel-dib .calco, .piel-dib .tinta { opacity: 0; }
+.ses-boceto .boceto { opacity: 1; }
+.ses-calco .calco { opacity: 1; }
+.ses-linea .calco { opacity: .45; } .ses-linea .tinta, .ses-sombra .tinta, .ses-color .tinta, .ses-curado .tinta { opacity: 1; }
+.ses-linea .irrita { opacity: .3; } .ses-sombra .irrita { opacity: .45; } .ses-color .irrita { opacity: .6; }
+.ses-linea .tinta .r, .ses-linea .tinta .k, .ses-linea .tinta .p { fill: var(--d-bg); }
+.ses-linea .tinta .s, .ses-linea .tinta .td, .ses-sombra .tinta .r { fill: var(--d-bg); }
+.ses-linea .tinta .s { opacity: 0; } .ses-linea .tinta .td { opacity: 0; }
+.ses-linea .tinta .tf { stroke: var(--d-bg); } .ses-sombra .tinta .tf { stroke: #9A938C; }
+.ses-sombra .tinta .r { fill: url(#punteado); }
+.ses-curado .tinta { opacity: .9; filter: blur(.35px); }
+.piel-dib .tinta * { transition: fill .7s, stroke .7s, opacity .7s; }
+
+/* Un día de sesión */
+.dia { margin-top: clamp(80px, 9vw, 150px); }
+.dia__titulo { font-size: clamp(2rem, 3.6vw, 3.4rem); margin-bottom: clamp(28px, 3vw, 44px); }
+.dia__lista { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 22px; }
+.dia__lista li:nth-child(even) { transform: translateY(36px); }
+.dia__lista b { display: block; font-family: var(--f-display); font-weight: 400; font-size: clamp(1.7rem, 2.4vw, 2.3rem); line-height: 1.1; margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+.dia__lista p { font-size: 1rem; }
+@media (max-width: 1100px) { .dia__lista { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 40px; } .dia__lista li:nth-child(even) { transform: none; } }
+@media (max-width: 860px) {
+  .ses { grid-template-columns: minmax(0, 1fr); }
+  .ses__piel { position: relative; top: 0; }
+  .ses__brazo svg { max-height: 56svh; }
+  .ses__pasos { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--m) * -1); padding-inline: var(--m); scrollbar-width: none; }
+  .ses__pasos button { flex: none; white-space: nowrap; }
+}
+@media (max-width: 600px) { .dia__lista { grid-template-columns: 1fr; gap: 18px; } .dia__lista li { display: grid; grid-template-columns: 5.2rem 1fr; gap: 12px; align-items: baseline; } .dia__lista b { margin: 0; font-size: 1.6rem; } }
+
+/* ---- Artistas invitados (como un cartel de gira) ---------------------- */
+.gira { list-style: none; margin: 0; padding: 0; }
+.gira li { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.3fr) minmax(0, 1fr) auto; gap: 16px 32px; align-items: center; padding: clamp(20px, 2.4vw, 34px) clamp(14px, 2vw, 28px); margin-inline: calc(clamp(14px, 2vw, 28px) * -1); transition: background-color .35s var(--ease), color .35s var(--ease); }
+.gira li:nth-child(odd) { background: var(--papel-2); }
+.gira li:hover { background: var(--tinta); color: var(--papel); }
+.gira__fecha { font-family: var(--f-display); font-size: clamp(2.2rem, 4.6vw, 4.6rem); line-height: 1; white-space: nowrap; }
+.gira__nombre { font-weight: 800; font-size: clamp(1.25rem, 1.8vw, 1.6rem); line-height: 1.2; }
+.gira__desde { display: block; font-weight: 500; font-size: 1rem; opacity: .8; }
+.gira__estilo { font-weight: 600; }
+.gira__estilo small { display: block; font-weight: 500; font-size: .95rem; opacity: .8; }
+.gira .boton { white-space: nowrap; }
+.completo { color: var(--acento-texto); border: 3px solid currentColor; padding: .2em .6em; font-family: var(--f-display); font-size: 1.4rem; transform: rotate(-6deg); display: inline-block; filter: url(#goma); }
+@media (prefers-color-scheme: dark) { .completo { color: color-mix(in oklab, var(--acento) 70%, white); } }
+.gira li:hover .completo { color: color-mix(in oklab, var(--acento) 70%, white); }
+@media (max-width: 860px) {
+  .gira li { grid-template-columns: 1fr auto; }
+  .gira__estilo { grid-column: 1; }
+  .gira li > :last-child { grid-column: 2; grid-row: 1 / span 3; align-self: center; }
+}
+@media (max-width: 520px) { .gira li { grid-template-columns: 1fr; } .gira li > :last-child { grid-column: 1; grid-row: auto; justify-self: start; } }
+
+/* ---- Servicios: tablón de precios ------------------------------------- */
+.servicios__rejilla { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 96px); align-items: start; }
+.cabeza--sola { display: block; margin: 0; position: sticky; top: 110px; }
+.cabeza--sola p { margin-top: 22px; }
+.cabeza--sola .boton { margin-top: 30px; }
+.tablon { background: var(--tinta); color: var(--papel); padding: clamp(24px, 3.4vw, 52px); }
+.tablon__lista { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(22px, 2.4vw, 32px); }
+.tablon__lista li { display: grid; grid-template-columns: 1fr auto; gap: 4px 24px; align-items: baseline; }
+.tablon__lista strong { font-family: var(--f-display); font-weight: 400; font-size: clamp(1.5rem, 2.4vw, 2.2rem); line-height: 1.1; }
+.tablon__lista em { font-style: normal; font-family: var(--f-display); font-size: clamp(1.3rem, 2vw, 1.8rem); color: color-mix(in oklab, var(--acento) 72%, white); white-space: nowrap; }
+.tablon__lista p { grid-column: 1 / -1; opacity: .85; max-width: 52ch; font-size: 1.02rem; }
+@media (prefers-color-scheme: dark) { .tablon__lista em { color: var(--acento-texto); } }
+@media (max-width: 860px) { .servicios__rejilla { grid-template-columns: minmax(0, 1fr); } .cabeza--sola { position: static; } }
+
+/* ---- Clientes: cifras y reseñas --------------------------------------- */
+.clientes { background: var(--papel-2); overflow: hidden; }
+.cifras { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; margin: 0 0 clamp(48px, 6vw, 90px); }
+.cifras div { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 6px; }
+.cifras dd { margin: 0; font-family: var(--f-display); font-size: clamp(3rem, 6.6vw, 6.4rem); line-height: .95; font-variant-numeric: tabular-nums; }
+.cifras dt { font-weight: 600; max-width: 18ch; }
+.resenas { display: grid; gap: 18px; }
+.resenas__fila { overflow: hidden; }
+.resenas__pista { display: inline-flex; gap: 18px; padding-block: 10px; animation: desfile 70s linear infinite; will-change: transform; }
+.resenas__fila--inversa .resenas__pista { animation-direction: reverse; animation-duration: 82s; }
+.resenas:hover .resenas__pista { animation-play-state: paused; }
+.resena { flex: none; width: min(360px, 78vw); background: var(--hoja); color: #161514; padding: 22px 24px; display: grid; gap: 12px; align-content: start; white-space: normal; transform: rotate(var(--rot, 0deg)); }
+.resena__estrellas { display: flex; gap: 3px; color: var(--acento); }
+.resena__estrellas svg { width: 18px; height: 18px; }
+.resena p { font-size: 1.05rem; line-height: 1.45; }
+.resena footer { font-size: .92rem; color: #4A4743; }
+.resena footer b { color: #161514; }
+@media (max-width: 860px) { .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---- Mapa del dolor --------------------------------------------------- */
+.dolor__rejilla { display: grid; grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); gap: clamp(28px, 5vw, 96px); align-items: center; }
+.dolor__cuerpo svg { width: 100%; max-height: 74svh; height: auto; margin-inline: auto; }
+.dolor__cuerpo .cuerpo { fill: var(--papel-3); }
+.dolor__cuerpo .zona { cursor: pointer; stroke: var(--papel); stroke-width: 2.5; stroke-linejoin: round; transition: fill .3s; }
+.dolor__cuerpo .n1 { fill: color-mix(in oklab, var(--tinta) 16%, var(--papel)); }
+.dolor__cuerpo .n2 { fill: color-mix(in oklab, var(--tinta) 32%, var(--papel)); }
+.dolor__cuerpo .n3 { fill: color-mix(in oklab, var(--tinta) 50%, var(--papel)); }
+.dolor__cuerpo .n4 { fill: color-mix(in oklab, var(--tinta) 68%, var(--papel)); }
+.dolor__cuerpo .n5 { fill: color-mix(in oklab, var(--tinta) 86%, var(--papel)); }
+.dolor__cuerpo .zona:hover, .dolor__cuerpo .zona.activa { fill: var(--acento); }
+.dolor__leyenda { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 14px; font-size: .92rem; color: var(--tinta-2); }
+.dolor__leyenda i { width: 22px; height: 12px; display: inline-block; }
+.dolor__zonas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
+.dolor__zonas .chip[aria-pressed="true"] { background: var(--acento); color: var(--sobre-acento); }
+.dolor__ficha { background: var(--hoja); color: #161514; padding: clamp(22px, 3vw, 40px); }
+.dolor__ficha.cambia { animation: ficha .45s var(--ease); }
+.dolor__ficha h3 { font-size: clamp(2.2rem, 4vw, 3.6rem); }
+.agujas { display: flex; align-items: center; gap: 6px; margin: 14px 0 6px; }
+.agujas svg { width: 26px; height: 40px; }
+.agujas .llena { fill: var(--acento); } .agujas .vacia { fill: #DAD8D0; }
+.agujas strong { margin-left: 10px; font-size: 1.1rem; }
+.dolor__ficha dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; margin: 16px 0; }
+.dolor__ficha dt { color: #4A4743; }
+.dolor__ficha dd { margin: 0; font-weight: 700; }
+.dolor__ficha p { margin-bottom: 22px; max-width: 50ch; }
+@media (max-width: 860px) {
+  .dolor__rejilla { grid-template-columns: minmax(0, 1fr); }
+  .dolor__cuerpo svg { max-height: 52svh; }
+  .dolor__zonas { flex-wrap: nowrap; overflow-x: auto; margin-inline: calc(var(--m) * -1); padding-inline: var(--m); scrollbar-width: none; }
+  .dolor__zonas .chip { flex: none; }
+}
+
+/* ---- Pie: enlaces legales --------------------------------------------- */
+.pie__enlaces { display: inline-flex; flex-wrap: wrap; gap: 6px 18px; }
+.pie__enlaces a { text-decoration: underline; text-decoration-thickness: 1px; }
+
+/* ---- Titulares de sección: calco y luego tinta al entrar --------------- */
+.h-entinta { position: relative; }
+.h-entinta .h__calco { position: absolute; inset: 0; color: transparent; -webkit-text-stroke: 1.2px var(--calco); transform: translate(.03em, .03em); pointer-events: none; opacity: 0; }
+.flash .h-entinta .h__calco, .reserva .h-entinta .h__calco { -webkit-text-stroke-color: color-mix(in oklab, var(--calco) 55%, white); }
+.js .h-entinta .h__tinta { display: block; clip-path: inset(-20% 100% -25% 0); filter: blur(6px); }
+.js .h-entinta.in .h__tinta { animation: entintar 1.1s var(--ease) .25s forwards; }
+.js .h-entinta.in .h__calco { animation: trazo-calco .6s var(--ease) forwards, fundir-calco 1.2s ease 1.4s forwards; }
+
+/* ---- Salpicadura de tinta al hacer clic ------------------------------- */
+.salpicadura { position: fixed; z-index: 150; width: 84px; height: 84px; margin: -42px 0 0 -42px; pointer-events: none; animation: salpica 1s cubic-bezier(.2, .9, .2, 1) forwards; }
+@keyframes salpica { 0% { transform: scale(.15) rotate(var(--r)); opacity: 1; } 35% { transform: scale(1) rotate(var(--r)); opacity: .9; } 100% { transform: scale(1.06) rotate(var(--r)); opacity: 0; } }
+
+/* ---- Zumbido de máquina en los botones -------------------------------- */
+@media (hover: hover) { .boton:hover { animation: zumbido .3s linear 1; } }
+@keyframes zumbido { 20% { transform: translate(.8px, -.6px) rotate(.35deg); } 40% { transform: translate(-.8px, .5px) rotate(-.35deg); } 60% { transform: translate(.6px, .7px); } 80% { transform: translate(-.5px, -.4px); } }
+
+/* ---- Aparición al hacer scroll ---------------------------------------- */
+.js [data-rv] .rv { opacity: 0; transform: translateY(26px); transition: opacity .75s var(--ease) var(--d, 0ms), transform .95s var(--ease) var(--d, 0ms); }
+.js [data-rv].in .rv { opacity: 1; transform: none; }
+.paso:nth-child(even).rv.in-paso { transform: none; }
+
+/* ---- Titular de portada: calco y luego tinta, línea a línea ------------ */
+.js .linea__tinta { clip-path: inset(-20% 100% -25% 0); filter: blur(7px); }
+.js .linea__calco { clip-path: inset(-20% 100% -25% 0); }
+.listo .linea__calco { animation: trazo-calco .7s var(--ease) forwards, fundir-calco 1.4s ease 1.6s forwards; animation-delay: calc(var(--i) * 150ms), calc(1.6s + var(--i) * 150ms); }
+.listo .linea__tinta { animation: entintar 1.1s var(--ease) forwards; animation-delay: calc(.45s + var(--i) * 170ms); }
+@keyframes trazo-calco { from { clip-path: inset(-20% 100% -25% 0); opacity: 1; } to { clip-path: inset(-20% -3% -25% 0); opacity: 1; } }
+@keyframes fundir-calco { from { opacity: 1; } to { opacity: .28; clip-path: inset(-20% -3% -25% 0); } }
+@keyframes entintar { 0% { clip-path: inset(-20% 100% -25% 0); filter: blur(7px); } 60% { filter: blur(1.5px); } 100% { clip-path: inset(-20% -3% -25% 0); filter: blur(0); } }
+.js .portada__texto > *, .js .portada__dibujo { opacity: 0; transform: translateY(18px); }
+.listo .portada__texto > *, .listo .portada__dibujo { animation: subir .9s var(--ease) forwards; }
+.listo .portada__texto > :nth-child(1) { animation-delay: .9s; }
+.listo .portada__texto > :nth-child(2) { animation-delay: 1s; }
+.listo .portada__texto > :nth-child(3) { animation-delay: 1.1s; }
+.listo .portada__texto > :nth-child(4) { animation-delay: 1.2s; }
+.listo .portada__dibujo { animation-delay: .2s; }
+@keyframes subir { to { opacity: 1; transform: none; } }
+.dibujo-hero .calco [pathLength] { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.listo .dibujo-hero .calco [pathLength] { animation: trazar 1.9s var(--ease) .35s forwards; }
+@keyframes trazar { to { stroke-dashoffset: 0; } }
+
+/* ---- Cursor aguja (solo ordenador) ------------------------------------ */
+.aguja { display: none; }
+.con-aguja .aguja {
+  display: block; position: fixed; left: 0; top: 0; z-index: 200; pointer-events: none;
+  width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%;
+  background: var(--tinta); box-shadow: 0 0 0 2px var(--papel);
+  transition: width .25s var(--ease), height .25s var(--ease), margin .25s var(--ease), background-color .25s, opacity .2s;
+}
+.con-aguja .aguja.sobre { width: 44px; height: 44px; margin: -22px 0 0 -22px; background: color-mix(in oklab, var(--acento) 30%, transparent); box-shadow: 0 0 0 2px var(--acento); }
+.con-aguja .aguja.dibujando { width: 18px; height: 18px; margin: -9px 0 0 -9px; background: #161514; box-shadow: 0 0 0 3px var(--acento); }
+.con-aguja .aguja.oculta { opacity: 0; }
+.con-aguja, .con-aguja a, .con-aguja button, .con-aguja summary, .con-aguja label { cursor: none; }
+.con-aguja input, .con-aguja textarea, .con-aguja select { cursor: auto; }
+
+/* ---- Reducir movimiento ----------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; transition-delay: 0ms !important; }
+  .js .linea__tinta, .js .linea__calco { clip-path: none; filter: none; }
+  .js .linea__calco { opacity: .28; }
+  .js .portada__texto > *, .js .portada__dibujo, .js [data-rv] .rv, .js .pieza { opacity: 1; transform: none; }
+  .js .entintable .tinta { clip-path: none; }
+  .dibujo-hero .calco [pathLength] { stroke-dashoffset: 0; }
+  .cinta__pista, .resenas__pista { animation: none !important; }
+  .cinta, .resenas__fila { overflow-x: auto; }
+  .js .h-entinta .h__tinta { clip-path: none; filter: none; }
+  .salpicadura { display: none; }
+  ::view-transition-group(*) { animation: none; }
+}
+
+/* ---- Capa de color: secciones y marcos vivos --------------------------- */
+body { background-color: var(--papel); background-image: radial-gradient(1200px 600px at 85% -5%, color-mix(in oklab, var(--rosa) 45%, transparent), transparent 60%), radial-gradient(900px 500px at -5% 30%, color-mix(in oklab, var(--turquesa) 35%, transparent), transparent 60%); background-attachment: fixed; }
+.cabecera, .cabecera.con-scroll { background: color-mix(in oklab, var(--papel) 88%, transparent); backdrop-filter: blur(10px); }
+.sesiones { background: var(--s-ses); }
+.estudio { background: var(--s-est); }
+.clientes { background: var(--s-cli); }
+.flash { background: linear-gradient(160deg, var(--pared), color-mix(in oklab, var(--pared) 70%, #FF2E8A)); }
+.pie { background: linear-gradient(160deg, #12062E, #3B0E7A); }
+.boton { box-shadow: 4px 4px 0 var(--tinta); transition: transform .25s var(--ease), box-shadow .25s, background-color .25s; }
+.boton:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--tinta); }
+.boton:active { transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--tinta); }
+.chip { background: var(--amarillo); color: #151413; }
+.chip:hover { background: var(--rosa); }
+.chip[aria-pressed="true"] { background: var(--violeta); color: #fff; }
+.pieza__hoja { background: var(--amarillo); box-shadow: 6px 6px 0 var(--tinta); }
+.pieza:nth-child(4n+2) .pieza__hoja { background: var(--turquesa); }
+.pieza:nth-child(4n+3) .pieza__hoja { background: var(--rosa); }
+.pieza:nth-child(4n+4) .pieza__hoja { background: var(--violeta); }
+.pieza__hoja img { filter: saturate(1.15) contrast(1.05); }
+.artista:nth-child(odd) { background: var(--s-ses); }
+.artista:nth-child(even) { background: var(--s-est); }
+.gira li:nth-child(odd) { background: var(--amarillo); color: #151413; }
+.gira li:nth-child(even) { background: var(--turquesa); color: #151413; }
+.pregunta { background: var(--papel-2); }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+<a class="saltar" href="#contenido">Saltar al contenido</a>
+
+<!-- Definiciones SVG compartidas: punteado, rayado, temblor del calco, sello de goma -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="punteado" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="1.5" cy="1.5" r="1.05" fill="#161514"/><circle cx="4.5" cy="4.5" r="1.05" fill="#161514"/></pattern>
+    <pattern id="punteado-denso" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="4" fill="#161514" opacity=".18"/><circle cx="1" cy="1" r="1.1" fill="#161514"/><circle cx="3" cy="3" r="1.1" fill="#161514"/></pattern>
+    <pattern id="rayado" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="2.2" height="5" fill="#161514"/></pattern>
+    <filter id="temblor" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="turbulence" baseFrequency=".035" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <filter id="temblor-fuerte" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="turbulence" baseFrequency=".05" numOctaves="2" seed="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+    <filter id="goma" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="1" seed="4" result="t"/><feColorMatrix in="t" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3.2 0 0 0 2.55" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter>
+    <filter id="irritacion" x="-20%" y="-10%" width="140%" height="120%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="sangrado" filterUnits="userSpaceOnUse" x="-40" y="-120" width="500" height="720"><feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="11" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter>
+  </defs>
+</svg>
+
+<div class="aguja" aria-hidden="true"></div>
+<div class="previa" aria-hidden="true"></div>
+
+<!-- ============================ CABECERA ============================ -->
+<header class="cabecera">
+  <div class="envoltura cabecera__fila">
+    <a class="logo" href="#inicio" aria-label="Inicio"><span data-e="nombre">Calco</span><i aria-hidden="true"></i></a>
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#trabajos">Trabajos</a>
+      <a href="#sesiones">Sesiones</a>
+      <a href="#artistas">Artistas</a>
+      <a href="#estudio">Estudio</a>
+      <a href="#cuidados">Cuidados</a>
+    </nav>
+    <button class="menu-boton" aria-expanded="false" aria-controls="nav">Menú</button>
+    <a class="boton" href="#reserva">Pide cita</a>
+  </div>
+  <div class="progreso" aria-hidden="true"><span></span></div>
+</header>
+
+<main id="contenido">
+
+<!-- ============================ PORTADA ============================= -->
+<section class="portada envoltura" id="inicio">
+  <div class="portada__rejilla">
+    <div>
+      <h1 id="titular"></h1>
+      <div class="portada__texto">
+        <p class="portada__frase" data-e="frase"></p>
+        <p class="ubicacion"><span data-e="barrio"></span>, <span data-e="ciudad"></span> · Diseño a medida y flash</p>
+        <p class="agenda"><b aria-hidden="true"></b><span data-e="agenda"></span></p>
+        <div class="portada__acciones">
+          <a class="boton" href="#reserva">Pide cita <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></a>
+          <a class="enlace-flecha" href="#trabajos">Ver trabajos</a>
+        </div>
+      </div>
+    </div>
+    <div class="portada__dibujo">
+      <div id="hero-dibujo"></div>
+      <p class="portada__pista" id="hero-pista" aria-live="polite"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CINTAS DE TEMÁTICAS ================ -->
+<div class="cintas" aria-label="Temáticas que tatuamos">
+  <div class="cinta cinta--roja"><div class="cinta__pista" data-cinta="0"></div></div>
+  <div class="cinta cinta--tinta"><div class="cinta__pista" data-cinta="1"></div></div>
+</div>
+
+<!-- ============================ TRABAJOS ============================ -->
+<section class="seccion envoltura" id="trabajos" data-rv>
+  <div class="cabeza">
+    <h2 class="rv">Trabajos</h2>
+    <p class="rv" id="trabajos-intro">Filtra por estilo o por artista. Si algo te encaja, pide una pieza parecida.</p>
+  </div>
+  <div class="filtros rv">
+    <div class="filtros__fila" role="group" aria-labelledby="fl-estilo"><span class="filtros__nombre" id="fl-estilo">Estilo</span><span id="filtro-estilos" style="display:contents"></span></div>
+    <div class="filtros__fila" role="group" aria-labelledby="fl-artista"><span class="filtros__nombre" id="fl-artista">Artista</span><span id="filtro-artistas" style="display:contents"></span></div>
+  </div>
+  <div class="galeria" id="galeria" aria-live="polite"></div>
+  <p class="nota galeria__pista">Desliza para ver más piezas.</p>
+  <noscript><p>Activa JavaScript para ver la galería.</p></noscript>
+</section>
+
+<!-- ============================ SESIONES (demo) ===================== -->
+<section class="sesiones seccion" id="sesiones">
+  <div class="envoltura">
+    <div class="cabeza" data-rv>
+      <h2 class="rv">Así va una pieza grande</h2>
+      <p class="rv">Un proyecto real de principio a fin, sesión a sesión. Mueve la aguja para verlo crecer.</p>
+    </div>
+    <div class="ses" id="ses">
+      <figure class="ses__piel" aria-live="polite">
+        <div class="ses__brazo" id="ses-dibujo"></div>
+        <figcaption class="ses__pie" id="ses-pie"></figcaption>
+      </figure>
+      <div class="ses__panel">
+        <ol class="ses__pasos" id="ses-pasos"></ol>
+        <label class="ses__barra"><span class="sr">Avance del proyecto</span><input type="range" id="ses-rango" min="0" max="5" step="1" value="0"></label>
+        <article class="ses__ficha" id="ses-ficha"></article>
+      </div>
+    </div>
+    <div class="dia" data-rv>
+      <h3 class="dia__titulo rv">Un día de sesión, hora a hora</h3>
+      <ol class="dia__lista rv" id="dia-lista"></ol>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ARTISTAS ============================ -->
+<section class="artistas" id="artistas">
+  <div class="envoltura cabeza" data-rv>
+    <h2 class="rv">Artistas</h2>
+    <p class="rv">Tres manos, tres estilos. Elige con quién quieres tatuarte.</p>
+  </div>
+  <div id="lista-artistas"></div>
+</section>
+
+<!-- ============================ INVITADOS =========================== -->
+<section class="invitados seccion" id="invitados">
+  <div class="envoltura">
+    <div class="cabeza" data-rv>
+      <h2 class="rv">Artistas invitados</h2>
+      <p class="rv">Cada mes pasa por el estudio alguien de fuera. Pocos huecos y se van rápido.</p>
+    </div>
+    <ol class="gira" id="gira"></ol>
+  </div>
+</section>
+
+<!-- ============================ FLASH ============================== -->
+<section class="flash seccion" id="flash">
+  <div class="envoltura">
+    <div class="cabeza" data-rv>
+      <h2 class="rv">Flash disponible</h2>
+      <p class="rv">Diseños listos para tatuar a precio cerrado. Cada uno se tatúa una sola vez.</p>
+    </div>
+    <div class="hoja-flash" id="hoja-flash"></div>
+  </div>
+</section>
+
+<!-- ============================ SERVICIOS ========================== -->
+<section class="servicios seccion" id="servicios">
+  <div class="envoltura servicios__rejilla">
+    <div class="cabeza cabeza--sola" data-rv>
+      <h2 class="rv">Precios claros</h2>
+      <p class="rv">Lo que hacemos y lo que cuesta, antes de que preguntes. El presupuesto final siempre es cerrado.</p>
+      <a class="boton rv" href="#reserva">Pedir presupuesto <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></a>
+    </div>
+    <div class="tablon" data-rv><ul class="tablon__lista" id="tablon"></ul></div>
+  </div>
+</section>
+
+<!-- ============================ CLIENTES =========================== -->
+<section class="clientes seccion" id="clientes">
+  <div class="envoltura">
+    <div class="cabeza" data-rv>
+      <h2 class="rv">Lo que dicen al salir</h2>
+      <p class="rv">Opiniones de gente que ya lleva nuestra tinta. Sin nombres: solo iniciales y la pieza.</p>
+    </div>
+    <dl class="cifras" id="cifras" data-rv></dl>
+  </div>
+  <div class="resenas" aria-label="Reseñas de clientes">
+    <div class="resenas__fila"><div class="resenas__pista" data-resenas="0"></div></div>
+    <div class="resenas__fila resenas__fila--inversa"><div class="resenas__pista" data-resenas="1"></div></div>
+  </div>
+</section>
+
+<!-- ============================ CÓMO FUNCIONA ======================= -->
+<section class="seccion envoltura" id="como" data-rv>
+  <div class="cabeza">
+    <h2 class="rv">Cómo funciona</h2>
+    <p class="rv">De la idea a la piel en cinco pasos, sin sorpresas por el camino.</p>
+  </div>
+  <ol class="pasos">
+    <li class="paso rv"><div class="paso__hoja" data-paso="idea"></div><div class="paso__texto"><h3>Idea</h3><p>Nos escribes con lo que tengas: una referencia, una frase, la zona. Nos vale un boceto en una servilleta.</p></div></li>
+    <li class="paso rv"><div class="paso__hoja" data-paso="diseno"></div><div class="paso__texto"><h3>Diseño</h3><p>Tu artista lo dibuja para tu cuerpo y te lo enseña antes de la cita. Se retoca lo que haga falta.</p></div></li>
+    <li class="paso rv"><div class="paso__hoja" data-paso="senal"></div><div class="paso__texto"><h3>Señal</h3><p>Reservas fecha con una señal de <span data-e="senal"></span> €, que se descuenta del precio final.</p></div></li>
+    <li class="paso rv"><div class="paso__hoja" data-paso="sesion"></div><div class="paso__texto"><h3>Sesión</h3><p>Ponemos el calco, lo miras en el espejo y, cuando digas, empezamos. Aguja nueva, abierta delante de ti.</p></div></li>
+    <li class="paso rv"><div class="paso__hoja" data-paso="cuidados"></div><div class="paso__texto"><h3>Cuidados</h3><p>Te vas con film, crema y la ficha de cuidados. Si hace falta, el retoque de los tres primeros meses es gratis.</p></div></li>
+  </ol>
+</section>
+
+<!-- ============================ MAPA DEL DOLOR ===================== -->
+<section class="dolor seccion" id="dolor">
+  <div class="envoltura">
+    <div class="cabeza" data-rv>
+      <h2 class="rv">¿Dónde duele más?</h2>
+      <p class="rv">Toca una zona del cuerpo y te contamos cuánto se nota, cuánto tarda en curar y qué le sienta bien.</p>
+    </div>
+    <div class="dolor__rejilla">
+      <div class="dolor__cuerpo" id="dolor-cuerpo"></div>
+      <div class="dolor__panel">
+        <div class="dolor__zonas" id="dolor-zonas" role="group" aria-label="Zonas del cuerpo"></div>
+        <article class="dolor__ficha" id="dolor-ficha" aria-live="polite"></article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ ESTUDIO ============================= -->
+<section class="estudio seccion" id="estudio">
+  <div class="envoltura estudio__rejilla" data-rv>
+    <div>
+      <h2 class="rv">Aguja nueva, cada vez</h2>
+      <p class="estudio__filo rv">Todo lo que toca tu piel es de un solo uso o sale del autoclave en su bolsa sellada, y lo abrimos delante de ti.</p>
+      <p class="texto-largo rv">Somos un estudio pequeño a propósito: tres puestos, cita previa y tiempo para hablar antes de tatuar. Cada diseño se dibuja para quien lo va a llevar, en su zona y a su tamaño; no copiamos tatuajes de otras personas. Trabajamos con tintas veganas, guantes de nitrilo y superficies desinfectadas entre cliente y cliente.</p>
+      <div class="datos rv">
+        <div>
+          <h3>Dónde</h3>
+          <p data-e="direccion"></p>
+          <p><span data-e="barrio"></span>, <span data-e="ciudad"></span></p>
+          <p style="margin-top:10px"><a class="enlace-flecha" data-href="mapa" target="_blank" rel="noopener">Abrir en Google Maps</a></p>
+        </div>
+        <div>
+          <h3>Horario</h3>
+          <dl data-horario></dl>
+          <p class="nota" style="margin-top:8px">Solo con cita previa.</p>
+        </div>
+      </div>
+    </div>
+    <a class="mapa rv" data-href="mapa" target="_blank" rel="noopener" aria-label="Ver la ubicación del estudio en Google Maps">
+      <div id="mapa-svg"></div>
+      <div class="mapa__pie"><span>Plano orientativo</span><span style="display:inline-flex;gap:.4em;align-items:center">Cómo llegar <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></span></div>
+    </a>
+  </div>
+</section>
+
+<!-- ============================ CUIDADOS / FAQ ====================== -->
+<section class="seccion envoltura" id="cuidados">
+  <div class="cuidados__rejilla" data-rv>
+    <div>
+      <h2 class="rv">Cuidados y dudas</h2>
+      <div class="ficha-cuidados rv">
+        <h3>Ficha para casa</h3>
+        <dl>
+          <div><dt>Las primeras 3 horas</dt><dd>Deja el film puesto. Luego lávalo con agua tibia y jabón neutro, sin frotar, y sécalo a toquecitos.</dd></div>
+          <div><dt>Del día 1 al 15</dt><dd>Crema fina dos o tres veces al día. Nada de sol directo, piscina, mar ni sauna.</dd></div>
+          <div><dt>Cuando pique o pele</dt><dd>Es normal. No rasques ni arranques pieles: deja que caigan solas.</dd></div>
+          <div><dt>Para siempre</dt><dd>Protector solar alto. Es lo que mantiene la línea negra y el rojo vivos con los años.</dd></div>
+        </dl>
+      </div>
+    </div>
+    <div class="preguntas rv" id="preguntas"></div>
+  </div>
+</section>
+
+<!-- ============================ RESERVA ============================= -->
+<section class="reserva seccion" id="reserva">
+  <div class="envoltura reserva__rejilla" data-rv>
+    <div class="reserva__lado">
+      <h2 class="rv">¿Qué te tatuamos?</h2>
+      <p class="rv">Rellena la ficha y te abrimos WhatsApp o tu correo con el mensaje ya escrito. Respondemos en uno o dos días.</p>
+      <div class="directos rv">
+        <a data-href="whatsapp" target="_blank" rel="noopener"><span>WhatsApp</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></a>
+        <a data-href="instagram" target="_blank" rel="noopener"><span>Instagram</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></a>
+        <a data-href="telefono"><span>Llamar</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></a>
+        <a data-href="email"><span>Email</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 18 18 6M8 6h10v10" fill="none" stroke="currentColor" stroke-width="2.6"/></svg></a>
+      </div>
+    </div>
+
+    <form class="ficha rv" id="form-reserva" novalidate>
+      <div class="ficha__cabeza"><strong>Ficha de cita</strong><span>Sin compromiso</span></div>
+      <div class="ref" id="ref"><span id="ref-texto"></span><button type="button" id="ref-quitar">Quitar</button></div>
+      <div class="campos">
+        <div class="campo">
+          <label for="f-nombre">Nombre</label>
+          <input id="f-nombre" name="nombre" autocomplete="name" placeholder="Cómo te llamas" aria-describedby="e-nombre">
+          <p class="error" id="e-nombre"></p>
+        </div>
+        <div class="campo">
+          <label for="f-fechas">Fechas preferidas</label>
+          <input id="f-fechas" name="fechas" placeholder="Ej. tardes de noviembre">
+        </div>
+        <div class="campo campo--ancho">
+          <label for="f-idea">Tu idea</label>
+          <textarea id="f-idea" name="idea" placeholder="Qué quieres tatuarte, si tienes referencias, colores…" aria-describedby="e-idea"></textarea>
+          <p class="error" id="e-idea"></p>
+        </div>
+        <div class="campo">
+          <label for="f-estilo">Estilo</label>
+          <select id="f-estilo" name="estilo"></select>
+        </div>
+        <div class="campo">
+          <label for="f-artista">Artista</label>
+          <select id="f-artista" name="artista"></select>
+        </div>
+        <div class="campo">
+          <label for="f-zona">Zona del cuerpo</label>
+          <select id="f-zona" name="zona"></select>
+        </div>
+        <fieldset class="campo campo--ancho">
+          <legend>Tamaño aproximado</legend>
+          <div class="tamanos" id="tamanos"></div>
+        </fieldset>
+      </div>
+      <div class="ficha__enviar">
+        <button class="boton" type="submit" name="via" value="whatsapp">Enviar por WhatsApp</button>
+        <button class="boton boton--tinta" type="submit" name="via" value="email">Enviar por email</button>
+      </div>
+      <p class="ficha__nota">No guardamos nada en ningún servidor: el mensaje se prepara aquí y lo envías tú. Edad mínima para tatuarse: 18 años.</p>
+      <div class="hecho" id="hecho" role="status" tabindex="-1">
+        <strong>Ficha lista</strong>
+        <p id="hecho-texto"></p>
+        <div class="hecho__mensaje"><p id="hecho-mensaje"></p></div>
+        <button type="button" id="copiar">Copiar mensaje</button>
+      </div>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- ============================ PIE ================================= -->
+<footer class="pie">
+  <div class="envoltura">
+    <div class="pie__rejilla">
+      <div><h3>Estudio</h3><p data-e="direccion"></p><p><span data-e="barrio"></span>, <span data-e="ciudad"></span></p></div>
+      <div><h3>Horario</h3><ul data-horario-lista></ul></div>
+      <div><h3>Redes y contacto</h3><ul>
+        <li><a data-href="instagram" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a data-href="whatsapp" target="_blank" rel="noopener">WhatsApp</a></li>
+        <li><a data-href="email" data-e="email"></a></li>
+        <li><a data-href="telefono" data-e="telefono"></a></li>
+      </ul></div>
+      <div><h3>¿Te animas?</h3><a class="boton" href="#reserva">Pide cita</a></div>
+    </div>
+  </div>
+  <div class="pie__nombre" id="pie-nombre" aria-hidden="true"></div>
+  <div class="envoltura pie__legal">
+    <span>© <span id="anio"></span> <span data-e="nombreLargo"></span></span>
+    <span class="pie__enlaces"><a href="#">Política de privacidad</a> <a href="#">Aviso legal</a> <a href="#">Cookies</a></span>
+    <span>Demo: estudio, reseñas, cifras e ilustraciones ficticios.</span>
+  </div>
+</footer>
+
+<!-- ============================ LIGHTBOX ============================ -->
+<dialog class="lightbox" id="lightbox" aria-labelledby="lb-titulo">
+  <div class="lightbox__dentro">
+    <div class="lightbox__hoja" id="lb-hoja"></div>
+    <div class="lightbox__info">
+      <button class="lightbox__cerrar" id="lb-cerrar" type="button">Cerrar <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="2.6"/></svg></button>
+      <h2 id="lb-titulo"></h2>
+      <dl>
+        <dt>Estilo</dt><dd id="lb-estilo"></dd>
+        <dt>Artista</dt><dd id="lb-artista"></dd>
+        <dt>Zona</dt><dd id="lb-zona"></dd>
+      </dl>
+      <button class="boton" id="lb-quiero" type="button">Quiero algo así <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+      <div class="lightbox__nav">
+        <button class="flecha" id="lb-ant" type="button" aria-label="Pieza anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 12H5m6-6-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+        <span id="lb-cuenta"></span>
+        <button class="flecha" id="lb-sig" type="button" aria-label="Pieza siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+/* ==========================================================================
+   LÓGICA · No hace falta tocar nada de aquí para cambiar contenidos.
+   ========================================================================== */
+(() => {
+'use strict';
+
+const $  = (s, c = document) => c.querySelector(s);
+const $$ = (s, c = document) => [...c.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const f = n => Math.round(n * 10) / 10;
+let uidN = 0; const uid = p => `${p}${++uidN}`;
+const reducir = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const artista = id => ARTISTAS.find(a => a.id === id);
+const nombreArtista = id => artista(id)?.nombre ?? 'Cualquiera';
+const encaja = (txt, ancho, max, k = .62) => f(Math.min(max, ancho / (Math.max(String(txt).length, 1) * k)));
+
+/* ---------- Color de acento y datos del estudio ---------- */
+document.documentElement.style.setProperty('--acento', ESTUDIO.acento);
+document.title = `${ESTUDIO.nombre} · Estudio de tatuaje en ${ESTUDIO.ciudad}`;
+const soloDigitos = String(ESTUDIO.whatsapp).replace(/\D/g, '');
+const correoValido = /@/.test(ESTUDIO.email);
+const enlaces = {
+  whatsapp: soloDigitos ? `https://wa.me/${soloDigitos}` : 'https://wa.me/',
+  instagram: `https://instagram.com/${String(ESTUDIO.instagram).replace(/^@/, '')}`,
+  email: correoValido ? `mailto:${ESTUDIO.email}` : 'mailto:',
+  telefono: /\d/.test(ESTUDIO.telefono) ? `tel:${String(ESTUDIO.telefono).replace(/[^\d+]/g, '')}` : '#reserva',
+  mapa: ESTUDIO.mapa || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${ESTUDIO.direccion} ${ESTUDIO.ciudad}`)}`
+};
+$$('[data-e]').forEach(el => { el.textContent = ESTUDIO[el.dataset.e] ?? ''; });
+$$('[data-href]').forEach(el => { el.href = enlaces[el.dataset.href]; });
+$$('[data-horario]').forEach(dl => { dl.innerHTML = ESTUDIO.horario.map(([d, h]) => `<div><dt>${esc(d)}</dt><dd>${esc(h)}</dd></div>`).join(''); });
+$$('[data-horario-lista]').forEach(ul => { ul.innerHTML = ESTUDIO.horario.map(([d, h]) => `<li>${esc(d)}: ${esc(h)}</li>`).join(''); });
+$('#anio').textContent = new Date().getFullYear();
+
+/* ==========================================================================
+   DIBUJOS · Motivos de flash en SVG (caja de 200 × 200).
+   Clases: o = línea, r = rojo, k = negro, p = papel, s = sombra en puntos,
+   tb/tf = tubo (contorno/relleno), op = línea de papel sobre negro.
+   ========================================================================== */
+const chispa = (x, y, r, c = 'k o') => `<path class="${c}" d="M${x} ${y - r}Q${x} ${y} ${x + r} ${y}Q${x} ${y} ${x} ${y + r}Q${x} ${y} ${x - r} ${y}Q${x} ${y} ${x} ${y - r}Z"/>`;
+
+const MOTIVOS = {
+  rosa: () => `
+    <path class="k o" d="M62 124Q26 124 12 166Q52 174 70 140Z"/><path class="op" d="M16 162Q40 146 62 132"/>
+    <path class="k o" d="M138 124Q174 124 188 166Q148 174 130 140Z"/><path class="op" d="M184 162Q160 146 138 132"/>
+    <path class="r o" d="M100 36C134 34 162 58 160 96C158 132 132 154 100 154C68 154 42 132 40 96C38 58 66 38 100 36Z"/>
+    <path class="s" d="M50 106C64 120 82 127 100 127C118 127 136 120 150 106C146 134 126 150 100 150C74 150 54 134 50 106Z"/>
+    <path class="o" d="M46 100C62 116 82 124 100 124C118 124 138 116 154 100"/>
+    <path class="o" d="M56 60C70 74 86 76 100 68C114 76 130 74 144 60"/>
+    <path class="o" d="M100 68C122 66 134 84 128 100C122 114 102 118 90 108C80 100 86 86 100 86C110 86 112 96 104 100"/>
+    <path class="o" d="M68 142C80 132 90 130 100 130C110 130 120 132 132 142"/>`,
+  daga: () => `
+    <path class="p o" d="M88 84L112 84L108 166L100 194L92 166Z"/>
+    <path class="s" d="M101 87L110 87L106 166L101 186Z"/>
+    <path class="o" d="M100 92L100 178"/>
+    <path class="k o" d="M54 72Q100 62 146 72Q152 78 148 86Q100 78 52 86Q48 78 54 72Z"/>
+    <path class="r o" d="M90 34L110 34L112 70L88 70Z"/>
+    <path class="o" d="M89 45L111 41M89 55L111 51M88 65L112 61"/>
+    <circle class="k o" cx="100" cy="22" r="11"/><circle class="p" cx="96" cy="18" r="3"/>`,
+  golondrina: () => `
+    <path class="k o" d="M80 110L16 90L54 118L12 150L84 126Z"/>
+    <path class="k o" d="M108 98C100 62 78 34 40 14C56 48 64 76 84 104Z"/>
+    <path class="op" d="M94 96C86 74 72 54 54 34"/>
+    <path class="k o" d="M70 118C88 100 120 90 150 90C164 90 174 84 180 78C186 82 190 86 194 90L184 95C178 108 162 116 142 120C118 127 92 127 70 118Z"/>
+    <path class="p o" d="M98 122C124 126 152 120 170 106C152 110 124 113 98 114Z"/>
+    <path class="r o" d="M158 100C170 98 180 94 188 93C182 102 172 108 158 110Z"/>
+    <path class="k o" d="M118 116C128 142 122 168 104 188C132 178 152 150 148 114Z"/>
+    <path class="op" d="M128 124C134 144 128 162 116 176"/>
+    <circle class="p" cx="178" cy="86" r="3.3"/>`,
+  serpiente: () => {
+    const d = 'M44 176C40 126 158 144 158 98C158 54 62 74 62 44C62 30 76 22 92 24';
+    return `<path class="tb" d="${d}"/><path class="tf" d="${d}"/><path class="td" d="${d}"/>
+    <path class="k o" d="M86 12C104 4 126 10 134 24C128 38 108 42 88 36C80 30 80 18 86 12Z"/>
+    <circle class="p" cx="116" cy="20" r="3.4"/><path class="o" d="M134 24L150 18M134 24L150 32"/>`;
+  },
+  luna: () => `
+    <path class="r o" d="M132 22A80 80 0 1 0 132 178A62 62 0 1 1 132 22Z"/>
+    <path class="s" d="M44 120A80 80 0 0 0 132 178A62 62 0 0 1 70 140Z"/>
+    <path class="o" d="M60 92Q68 99 76 92"/><path class="o" d="M70 120Q76 126 84 122"/>
+    ${chispa(150, 62, 13)}${chispa(172, 120, 9)}${chispa(140, 160, 6)}
+    <circle class="k dot" cx="162" cy="92" r="2.6"/><circle class="k dot" cx="118" cy="40" r="2.6"/>`,
+  ojo: () => `
+    <path class="p o" d="M20 100Q100 28 180 100Q100 172 20 100Z"/>
+    <circle class="r o" cx="100" cy="100" r="32"/>
+    <path class="s" d="M70 108A32 32 0 0 0 130 108A40 40 0 0 1 70 108Z"/>
+    <circle class="k" cx="100" cy="100" r="13"/><circle class="p" cx="110" cy="90" r="5"/>
+    <path class="o" d="M38 84L28 70M56 72L50 56M77 65L74 48M100 63L100 46M123 65L126 48M144 72L150 56M162 84L172 70"/>
+    <path class="r o" d="M100 150C106 160 109 167 100 174C91 167 94 160 100 150Z"/>`,
+  polilla: () => {
+    const ala = `
+      <path class="k o" d="M100 92C86 52 48 32 22 46C10 72 38 102 100 106Z"/>
+      <circle class="p o" cx="56" cy="68" r="11"/><circle class="r" cx="56" cy="68" r="5"/>
+      <path class="r o" d="M100 110C80 116 54 144 62 170C82 180 100 150 100 114Z"/>
+      <path class="o" d="M96 62C86 42 72 32 60 30"/>`;
+    return `<g>${ala}</g><g transform="matrix(-1 0 0 1 200 0)">${ala}</g>
+      <ellipse class="k o" cx="100" cy="112" rx="8" ry="40"/><circle class="k o" cx="100" cy="68" r="9"/>
+      <path class="op" d="M93 96H107M93 108H107M93 120H107M94 132H106"/>`;
+  },
+  helecho: () => {
+    let h = '<path class="o" d="M100 194C96 150 106 96 101 12"/>';
+    for (let i = 0; i < 12; i++) {
+      const y = 180 - i * 13.6, x = 100 + Math.sin((194 - y) / 60) * 3, L = 42 * (1 - i / 14) + 6;
+      h += `<path class="k o" d="M${f(x)} ${f(y)}Q${f(x - L * .55)} ${f(y - L * .6)} ${f(x - L)} ${f(y - L * .42)}Q${f(x - L * .45)} ${f(y - L * .04)} ${f(x)} ${f(y)}Z"/>`;
+      h += `<path class="k o" d="M${f(x)} ${f(y - 6)}Q${f(x + L * .55)} ${f(y - 6 - L * .6)} ${f(x + L)} ${f(y - 6 - L * .42)}Q${f(x + L * .45)} ${f(y - 6 - L * .04)} ${f(x)} ${f(y - 6)}Z"/>`;
+    }
+    return h;
+  },
+  corazon: (t = 'Mamá') => {
+    const id = uid('cz');
+    return `
+    <path class="r o" d="M100 180C42 136 14 100 26 64C38 30 84 30 100 62C116 30 162 30 174 64C186 100 158 136 100 180Z"/>
+    <path class="s" d="M100 172C134 146 160 120 168 88C164 120 138 150 100 172Z"/>
+    <path class="k o" d="M30 104L4 110L18 122L4 134L36 132Z"/><path class="k o" d="M170 104L196 110L182 122L196 134L164 132Z"/>
+    <path class="p o" d="M24 96Q100 82 176 96L176 128Q100 114 24 128Z"/>
+    <path id="${id}" d="M32 118Q100 104 168 118" fill="none"/>
+    <text class="t" font-size="${encaja(t, 120, 24)}" text-anchor="middle"><textPath href="#${id}" startOffset="50%">${esc(t)}</textPath></text>`;
+  },
+  ancla: () => {
+    const brazos = 'M38 126Q46 178 100 180Q154 178 162 126', cabo = 'M106 40C150 48 148 92 114 100C80 108 72 140 106 152';
+    return `<path class="tb" d="${brazos}"/><path class="tf" d="${brazos}"/>
+    <path class="k o" d="M22 140L38 108L56 136Z"/><path class="k o" d="M178 140L162 108L144 136Z"/>
+    <path class="p o" d="M92 44H108V178H92Z"/><path class="s" d="M101 47H106V175H101Z"/>
+    <path class="k o" d="M56 50H144V63H56Z"/>
+    <circle class="o" cx="100" cy="28" r="13"/>
+    <path class="tb fino" d="${cabo}"/><path class="tf fino" d="${cabo}"/>`;
+  },
+  estrella: () => {
+    let s = ''; const c = 100, R = 92, r = 36;
+    for (let i = 0; i < 5; i++) {
+      const a = (-90 + 72 * i) * Math.PI / 180, al = a - Math.PI / 5, ar = a + Math.PI / 5;
+      const T = `${f(c + R * Math.cos(a))} ${f(c + R * Math.sin(a))}`;
+      s += `<path class="k o" d="M${c} ${c}L${T}L${f(c + r * Math.cos(al))} ${f(c + r * Math.sin(al))}Z"/>`;
+      s += `<path class="r o" d="M${c} ${c}L${T}L${f(c + r * Math.cos(ar))} ${f(c + r * Math.sin(ar))}Z"/>`;
+    }
+    return s;
+  },
+  rayo: () => `
+    <path class="r o" d="M122 8L50 112L96 112L74 192L154 80L108 80L136 8Z"/>
+    <path class="s" d="M108 80L154 80L98 146L104 112Z"/>
+    ${chispa(46, 44, 12)}${chispa(158, 150, 9)}<circle class="k dot" cx="160" cy="34" r="3"/><circle class="k dot" cx="40" cy="150" r="3"/>`,
+  cereza: () => `
+    <path class="o" d="M64 124C74 82 104 50 128 30"/><path class="o" d="M136 116C132 84 130 58 128 30"/>
+    <path class="k o" d="M128 30C146 8 178 14 190 30C168 44 144 44 128 30Z"/><path class="op" d="M136 30C152 26 168 26 184 30"/>
+    <circle class="r o" cx="62" cy="150" r="29"/><circle class="r o" cx="138" cy="142" r="29"/>
+    <path class="s" d="M36 160A29 29 0 0 0 88 160A34 34 0 0 1 36 160Z"/><path class="s" d="M112 152A29 29 0 0 0 164 152A34 34 0 0 1 112 152Z"/>
+    <ellipse class="p" cx="52" cy="140" rx="5.5" ry="9" transform="rotate(30 52 140)"/><ellipse class="p" cx="128" cy="132" rx="5.5" ry="9" transform="rotate(30 128 132)"/>`,
+  sol: () => {
+    let r = '';
+    for (let i = 0; i < 16; i++) {
+      const a = i * Math.PI / 8, L = i % 2 ? 74 : 94, w = .17;
+      r += `<path class="${i % 2 ? 'r' : 'k'} o" d="M${f(100 + Math.cos(a - w) * 46)} ${f(100 + Math.sin(a - w) * 46)}L${f(100 + Math.cos(a) * L)} ${f(100 + Math.sin(a) * L)}L${f(100 + Math.cos(a + w) * 46)} ${f(100 + Math.sin(a + w) * 46)}Z"/>`;
+    }
+    return r + `<circle class="p o" cx="100" cy="100" r="48"/><path class="s" d="M60 120A48 48 0 0 0 140 120A56 56 0 0 1 60 120Z"/>
+      <path class="o" d="M78 92Q86 85 94 92M106 92Q114 85 122 92M82 116Q100 130 118 116"/>`;
+  },
+  llave: () => `<g transform="rotate(-35 100 100)">
+    <circle class="k o" cx="46" cy="100" r="32"/><circle class="p o" cx="46" cy="100" r="13"/>
+    <path class="p o" d="M78 93H186V107H78Z"/><path class="s" d="M80 101H184V105H80Z"/>
+    <path class="k o" d="M152 107H164V130H152Z"/><path class="k o" d="M170 107H182V124H170Z"/>
+    <path class="r o" d="M76 84H90V116H76Z"/>
+    <circle class="r o" cx="46" cy="68" r="5"/><circle class="r o" cx="46" cy="132" r="5"/><circle class="r o" cx="14" cy="100" r="5"/></g>`,
+  montana: () => `
+    <circle class="r o" cx="144" cy="50" r="18"/>
+    <path class="k o" d="M12 168L74 70L104 118L132 82L190 168Z"/>
+    <path class="p o" d="M74 70L85 88L78 85L72 92L66 86L63 88Z"/><path class="p o" d="M132 82L141 95L135 93L130 98L124 92Z"/>
+    <path class="o" d="M26 182H174M54 194H146"/>
+    <path class="o" d="M36 56q6-6 12 0q6-6 12 0M66 38q5-5 10 0q5-5 10 0"/>`,
+  letras: (t = 'Calco') => {
+    const pal = String(t).split(/\s+/); let l1 = t, l2 = '';
+    if (pal.length > 1) { const mitad = Math.ceil(pal.length / 2); l1 = pal.slice(0, mitad).join(' '); l2 = pal.slice(mitad).join(' '); }
+    const fs = encaja(l1.length > l2.length ? l1 : l2, 186, 58, .6);
+    const y1 = l2 ? 92 : 112, y2 = y1 + fs * .98;
+    const txt = (s, y) => `<text class="tr" x="103" y="${f(y + 3)}" text-anchor="middle" font-size="${fs}">${esc(s)}</text><text class="t" x="100" y="${f(y)}" text-anchor="middle" font-size="${fs}">${esc(s)}</text>`;
+    return `${chispa(26, 30, 10)}${chispa(176, 40, 8)}<path class="o" d="M40 ${f(y2 + 22)}Q100 ${f(y2 + 44)} 160 ${f(y2 + 22)}"/>
+      <circle class="r o" cx="100" cy="${f(y2 + 36)}" r="5"/>${txt(l1, y1)}${l2 ? txt(l2, y2) : ''}`;
+  }
+};
+const NOMBRES_MOTIVO = Object.keys(MOTIVOS).filter(k => k !== 'letras');
+const CLASE_ESTILO = { 'fine line': 'e-fine', blackwork: 'e-black', tradicional: 'e-trad', realismo: 'e-real', lettering: 'e-letter' };
+const claseEstilo = e => CLASE_ESTILO[String(e || '').toLowerCase()] || 'e-trad';
+const hash = s => [...String(s)].reduce((a, c) => a + c.charCodeAt(0), 0);
+
+/* Ilustración de una pieza: capa de calco violeta + capa de tinta + nombre */
+function svgPieza(p, { entintado = false, conNombre = true } = {}) {
+  const est = claseEstilo(p.estilo);
+  const clave = MOTIVOS[p.motivo] ? p.motivo : (est === 'e-letter' ? 'letras' : NOMBRES_MOTIVO[hash(p.titulo || p.nombre) % NOMBRES_MOTIVO.length]);
+  const texto = p.texto || p.titulo || p.nombre;
+  const nombre = p.titulo || p.nombre;
+  const etiqueta = (clave === 'letras' || !conNombre) ? '' : `<text class="t" x="120" y="272" text-anchor="middle" font-size="${encaja(nombre, 210, 19)}">${esc(nombre)}</text>`;
+  const capa = () => `<g transform="translate(20 16)">${MOTIVOS[clave](texto)}</g>${etiqueta}`;
+  return `<svg class="dib ${est}${entintado ? ' entintado' : ''}" viewBox="0 0 240 ${conNombre ? 290 : 240}" role="img" aria-label="Ilustración de ${esc(nombre)}">
+    <g class="calco" transform="translate(1.6 1.3)">${capa()}</g><g class="tinta">${capa()}</g></svg>`;
+}
+const imagenPieza = (p, opts) => p.imagen
+  ? `<img src="${esc(p.imagen)}" alt="${esc(p.titulo || p.nombre)}" loading="lazy" decoding="async">`
+  : svgPieza(p, opts);
+
+/* Sello de goma del artista (si no tiene foto) */
+function svgSello(a) {
+  const id = uid('sl');
+  const txt = `${a.nombre} · ${ESTUDIO.nombre} · ${a.nombre} · ${ESTUDIO.nombre} · `;
+  return `<svg class="sello dib" viewBox="0 0 200 200" role="img" aria-label="Sello de ${esc(a.nombre)}"><g filter="url(#goma)">
+    <circle cx="100" cy="100" r="94" fill="none" stroke="currentColor" stroke-width="6"/>
+    <circle cx="100" cy="100" r="64" fill="none" stroke="currentColor" stroke-width="3"/>
+    <path id="${id}" d="M100 22A78 78 0 1 1 99.9 22" fill="none"/>
+    <text font-family="Archivo, sans-serif" font-weight="800" font-size="14.5" fill="currentColor" textLength="482" lengthAdjust="spacing"><textPath href="#${id}">${esc(txt)}</textPath></text>
+    <g transform="translate(56 56) scale(.44)" class="sello__motivo">${MOTIVOS[a.sello] ? MOTIVOS[a.sello]() : MOTIVOS.rosa()}</g></g></svg>`;
+}
+
+/* ==========================================================================
+   PORTADA · Flash grande que el visitante entinta
+   ========================================================================== */
+function dibujoHero() {
+  const cinta = 'M66 452Q210 418 354 452L354 498Q210 464 66 498Z', textoCinta = 'M80 484Q210 452 340 484';
+  const capa = (idTxt) => `
+    <path class="p o" d="M184 168L236 168L228 446L210 528L192 446Z"/>
+    <path class="s" d="M212 172L232 172L226 446L212 516Z"/><path class="o" d="M210 180L210 500"/>
+    <path class="k o" d="M104 142Q210 120 316 142Q328 154 320 170Q210 152 100 170Q92 154 104 142Z"/>
+    <path class="r o" d="M188 58L232 58L236 136L184 136Z"/><path class="o" d="M187 80L233 72M186 100L234 92M185 120L235 112"/>
+    <circle class="k o" cx="210" cy="34" r="22"/><circle class="p" cx="202" cy="26" r="6"/>
+    <g transform="translate(85 168) scale(1.25)">${MOTIVOS.rosa()}</g>
+    <path class="k o" d="M74 460L22 470L46 492L22 514L82 506Z"/><path class="k o" d="M346 460L398 470L374 492L398 514L338 506Z"/>
+    <path class="p o" d="${cinta}"/>
+    <path id="${idTxt}" d="${textoCinta}" fill="none"/>
+    <text class="t" font-size="34" text-anchor="middle"><textPath href="#${idTxt}" startOffset="50%">${esc(ESTUDIO.nombre)}</textPath></text>
+    ${chispa(64, 112, 16)}${chispa(352, 236, 12)}${chispa(330, 82, 8)}${chispa(80, 330, 9)}
+    <circle class="k dot" cx="356" cy="320" r="4"/><circle class="k dot" cx="52" cy="216" r="4"/><circle class="k dot" cx="372" cy="150" r="3"/>`;
+  return `<svg class="dib dibujo-hero e-trad" viewBox="0 0 420 560" role="img" aria-label="Flash de una daga que atraviesa una rosa, con una cinta con el nombre del estudio">
+    <defs><mask id="m-hero" maskUnits="userSpaceOnUse" x="-20" y="-20" width="460" height="600">
+      <rect x="-20" y="-20" width="460" height="600" fill="#000"/>
+      <g id="m-hero-g" fill="#fff" filter="url(#sangrado)"><circle id="m-hero-scroll" cx="210" cy="-80" r="0"/></g>
+    </mask></defs>
+    <g class="calco" transform="translate(2.4 1.8)">${capa(uid('ht'))}</g>
+    <g class="tinta" mask="url(#m-hero)">${capa(uid('ht'))}</g>
+    <path id="hero-auto" d="M100 36C134 34 162 58 160 96C158 132 132 154 100 154C68 154 42 132 40 96C38 58 66 38 100 36C124 50 140 70 130 100C120 124 82 126 70 100C62 80 84 64 100 72" fill="none" stroke="none"/>
+  </svg>`;
+}
+
+function iniciarHero() {
+  const cont = $('#hero-dibujo');
+  cont.innerHTML = dibujoHero();
+  const svg = $('svg', cont), grupo = $('#m-hero-g', svg), circScroll = $('#m-hero-scroll', svg), pista = $('#hero-pista');
+  const tactil = matchMedia('(hover: none), (pointer: coarse)').matches;
+  let puntos = 0, max = 0, completo = false;
+  const textoPista = tactil ? 'Toca o desliza sobre el dibujo para entintarlo.' : 'Pasa la aguja por el dibujo para entintarlo.';
+  pista.textContent = textoPista;
+
+  if (reducir) { $('.tinta', svg).removeAttribute('mask'); pista.textContent = ''; return; }
+  $$('.calco .o, .calco .op', svg).forEach(el => el.setAttribute('pathLength', '1'));
+
+  const marcar = () => { if (!completo && (puntos > 240 || max > .98)) { completo = true; pista.textContent = 'Entintado. Así se ve en la piel.'; } };
+  const gota = (x, y, r) => {
+    if (puntos > 900) return;
+    const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    c.setAttribute('cx', f(x)); c.setAttribute('cy', f(y)); c.setAttribute('r', f(r));
+    grupo.appendChild(c); puntos++; marcar();
+  };
+  const local = e => { const pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY; return pt.matrixTransform(svg.getScreenCTM().inverse()); };
+  let ultimo = null;
+  svg.addEventListener('pointermove', e => {
+    const p = local(e);
+    if (ultimo && Math.hypot(p.x - ultimo.x, p.y - ultimo.y) < 7) return;
+    ultimo = p; gota(p.x, p.y, 20 + Math.random() * 8);
+  });
+  svg.addEventListener('pointerdown', e => { const p = local(e); gota(p.x, p.y, 30); });
+
+  // El scroll termina de entintar
+  const hero = $('#inicio');
+  let pendiente = false;
+  const alScroll = () => {
+    pendiente = false;
+    const prog = Math.min(1, Math.max(0, scrollY / (hero.offsetHeight * .75)));
+    if (prog > max) { max = prog; circScroll.setAttribute('r', f(prog * 860)); marcar(); }
+  };
+  addEventListener('scroll', () => { if (!pendiente) { pendiente = true; requestAnimationFrame(alScroll); } }, { passive: true });
+
+  // La aguja automática entinta la rosa al cargar
+  const ruta = $('#hero-auto', svg), largo = ruta.getTotalLength();
+  const aguja = $('.aguja');
+  setTimeout(() => {
+    const t0 = performance.now(), dur = 2600;
+    const paso = t => {
+      const k = Math.min(1, (t - t0) / dur);
+      const pt = ruta.getPointAtLength(largo * k);
+      gota(85 + pt.x * 1.25, 168 + pt.y * 1.25, 22);
+      if (k < 1) requestAnimationFrame(paso);
+    };
+    requestAnimationFrame(paso);
+  }, 1900);
+
+  if (aguja) {
+    svg.addEventListener('pointerenter', () => aguja.classList.add('dibujando'));
+    svg.addEventListener('pointerleave', () => aguja.classList.remove('dibujando'));
+  }
+}
+
+/* Titular: línea a línea, primero en calco y luego en tinta */
+function iniciarTitular() {
+  $('#titular').innerHTML = ESTUDIO.titular.map((l, i) =>
+    `<span class="linea" style="--i:${i}"><span class="linea__calco" aria-hidden="true">${esc(l)}</span><span class="linea__tinta">${esc(l)}</span></span>`).join('');
+}
+
+/* ==========================================================================
+   TRABAJOS · filtros, galería, vista previa y lightbox
+   ========================================================================== */
+const estado = { estilo: 'todos', artista: 'todos', lista: [] };
+const ESTILOS = [...new Set(TRABAJOS.map(t => t.estilo))];
+const galeria = $('#galeria');
+
+function pintarFiltros() {
+  const porArtista = TRABAJOS.filter(t => estado.artista === 'todos' || t.artista === estado.artista);
+  const porEstilo = TRABAJOS.filter(t => estado.estilo === 'todos' || t.estilo === estado.estilo);
+  const chip = (tipo, valor, texto, n) =>
+    `<button class="chip" type="button" data-${tipo}="${esc(valor)}" aria-pressed="${estado[tipo] === valor}" ${n === 0 ? 'disabled' : ''}>${esc(texto)} <small>${n}</small></button>`;
+  $('#filtro-estilos').innerHTML = chip('estilo', 'todos', 'Todos', porArtista.length) +
+    ESTILOS.map(e => chip('estilo', e, e, porArtista.filter(t => t.estilo === e).length)).join('');
+  $('#filtro-artistas').innerHTML = chip('artista', 'todos', 'Todos', porEstilo.length) +
+    ARTISTAS.map(a => chip('artista', a.id, a.nombre.split(' ')[0], porEstilo.filter(t => t.artista === a.id).length)).join('');
+}
+
+const tarjeta = (t) => {
+  const i = TRABAJOS.indexOf(t);
+  const rot = [-1.2, .8, -.5, 1.3, -.9, .4][i % 6];
+  return `<article class="pieza" style="view-transition-name:pieza-${i};--rot:${rot}deg">
+    <button class="pieza__hoja entintable" type="button" data-pieza="${i}" aria-label="Ver «${esc(t.titulo)}» en grande">${imagenPieza(t)}</button>
+    <h3 class="pieza__titulo${t.imagen ? '' : ' sr'}">${esc(t.titulo)}</h3>
+    <p class="pieza__meta">${esc(t.estilo)} · ${esc(nombreArtista(t.artista))} · ${esc(t.zona)}</p></article>`;
+};
+
+let primeraVez = true;
+function pintarGaleria() {
+  estado.lista = TRABAJOS.filter(t => (estado.estilo === 'todos' || t.estilo === estado.estilo) && (estado.artista === 'todos' || t.artista === estado.artista));
+  const html = estado.lista.length ? estado.lista.map(tarjeta).join('')
+    : `<p class="galeria__vacio">No hay piezas con esa combinación todavía. <button class="chip" type="button" data-estilo="todos" data-reset>Ver todo</button></p>`;
+  const cambiar = () => {
+    galeria.innerHTML = html;
+    if (primeraVez) { $$('.pieza', galeria).forEach((el, i) => { el.style.setProperty('--d', `${(i % 4) * 80}ms`); observar(el); }); }
+    else $$('.pieza', galeria).forEach(el => el.classList.add('in'));
+    primeraVez = false;
+  };
+  if (!primeraVez && document.startViewTransition && !reducir) document.startViewTransition(cambiar); else cambiar();
+}
+
+$('.filtros').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if (!b || b.disabled) return;
+  if (b.dataset.estilo) estado.estilo = b.dataset.estilo;
+  if (b.dataset.artista) estado.artista = b.dataset.artista;
+  pintarFiltros(); pintarGaleria();
+});
+galeria.addEventListener('click', e => {
+  if (e.target.closest('[data-reset]')) { estado.estilo = 'todos'; estado.artista = 'todos'; pintarFiltros(); pintarGaleria(); return; }
+  const b = e.target.closest('[data-pieza]'); if (!b) return;
+  abrirLightbox(estado.lista.indexOf(TRABAJOS[+b.dataset.pieza]));
+});
+
+/* Vista previa que sigue al cursor (solo ratón) */
+const previa = $('.previa');
+const conRaton = matchMedia('(hover: hover) and (pointer: fine)').matches;
+if (conRaton) {
+  let x = 0, y = 0, px = 0, py = 0, activa = false, anim = 0;
+  const mover = () => {
+    px += (x - px) * (reducir ? 1 : .2); py += (y - py) * (reducir ? 1 : .2);
+    const w = previa.offsetWidth, h = previa.offsetHeight;
+    const lx = px + 28 + w > innerWidth ? px - w - 28 : px + 28;
+    const ly = Math.min(Math.max(12, py - h / 2), innerHeight - h - 12);
+    previa.style.transform = `translate3d(${lx}px, ${ly}px, 0)`;
+    if (activa) anim = requestAnimationFrame(mover);
+  };
+  galeria.addEventListener('pointerover', e => {
+    const b = e.target.closest('[data-pieza]'); if (!b || e.pointerType !== 'mouse') return;
+    const t = TRABAJOS[+b.dataset.pieza];
+    previa.innerHTML = `${imagenPieza(t, { entintado: true })}<p>${esc(t.estilo)} · ${esc(nombreArtista(t.artista))}</p>`;
+    x = px = e.clientX; y = py = e.clientY;
+    if (!activa) { activa = true; anim = requestAnimationFrame(mover); }
+    previa.classList.add('visible');
+  });
+  galeria.addEventListener('pointermove', e => {
+    x = e.clientX; y = e.clientY;
+    const h = e.target.closest('.pieza__hoja'); if (!h || reducir) return;
+    const r = h.getBoundingClientRect();   // inclinación 3D suave
+    h.style.setProperty('--ry', `${f(((e.clientX - r.left) / r.width - .5) * 10)}deg`);
+    h.style.setProperty('--rx', `${f(((e.clientY - r.top) / r.height - .5) * -10)}deg`);
+  });
+  galeria.addEventListener('pointerout', e => {
+    const b = e.target.closest('[data-pieza]');
+    if (b && !b.contains(e.relatedTarget)) { previa.classList.remove('visible'); activa = false; cancelAnimationFrame(anim); }
+  });
+}
+
+/* Lightbox */
+const lb = $('#lightbox');
+let lbI = 0;
+function pintarLightbox() {
+  const t = estado.lista[lbI]; if (!t) return;
+  $('#lb-hoja').innerHTML = imagenPieza(t, { entintado: true });
+  $('#lb-titulo').textContent = t.titulo;
+  $('#lb-estilo').textContent = t.estilo;
+  $('#lb-artista').textContent = nombreArtista(t.artista);
+  $('#lb-zona').textContent = t.zona;
+  $('#lb-cuenta').textContent = `${lbI + 1} de ${estado.lista.length}`;
+}
+function abrirLightbox(i) {
+  lbI = Math.max(0, i); pintarLightbox();
+  previa.classList.remove('visible');
+  if (typeof lb.showModal === 'function') lb.showModal(); else lb.setAttribute('open', '');
+}
+const moverLB = d => { lbI = (lbI + d + estado.lista.length) % estado.lista.length; pintarLightbox(); };
+$('#lb-ant').addEventListener('click', () => moverLB(-1));
+$('#lb-sig').addEventListener('click', () => moverLB(1));
+$('#lb-cerrar').addEventListener('click', () => lb.close());
+lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+lb.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') moverLB(-1); if (e.key === 'ArrowRight') moverLB(1); });
+let toqueX = null;
+$('#lb-hoja').addEventListener('pointerdown', e => { toqueX = e.clientX; });
+$('#lb-hoja').addEventListener('pointerup', e => { if (toqueX === null) return; const dx = e.clientX - toqueX; toqueX = null; if (Math.abs(dx) > 50) moverLB(dx < 0 ? 1 : -1); });
+$('#lb-quiero').addEventListener('click', () => {
+  const t = estado.lista[lbI];
+  lb.close();
+  rellenarReserva({ estilo: t.estilo, artista: t.artista, zona: t.zona, idea: `Algo parecido a «${t.titulo}» (${t.estilo}).`, ref: `Referencia: «${t.titulo}» de ${nombreArtista(t.artista)}` });
+});
+
+/* ==========================================================================
+   ARTISTAS
+   ========================================================================== */
+function pintarArtistas() {
+  $('#lista-artistas').innerHTML = ARTISTAS.map((a, n) => {
+    const obra = TRABAJOS.filter(t => t.artista === a.id).slice(0, 3);
+    const ig = String(a.instagram).replace(/^@/, '');
+    return `<article class="artista" data-rv><div class="envoltura artista__rejilla">
+      <div class="artista__sello rv" style="--rot:${[-6, 5, -3][n % 3]}deg">${a.foto ? `<img class="artista__foto" src="${esc(a.foto)}" alt="Retrato de ${esc(a.nombre)}" loading="lazy">` : svgSello(a)}</div>
+      <div class="rv">
+        <h3>${esc(a.nombre)}</h3>
+        <p class="artista__esp">${esc(a.especialidad)}</p>
+        <blockquote>«${esc(a.frase)}»</blockquote>
+        <div class="artista__datos">
+          <ul class="artista__estilos" aria-label="Estilos">${a.estilos.map(e => `<li>${esc(e)}</li>`).join('')}</ul>
+          <a class="enlace-flecha" href="https://instagram.com/${esc(ig)}" target="_blank" rel="noopener">@${esc(ig)}</a>
+        </div>
+        <button class="boton" type="button" data-reservar="${esc(a.id)}">Reservar con ${esc(a.nombre.split(' ')[0])} <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4"/></svg></button>
+      </div>
+      <div class="artista__obra rv">${obra.map(t => `<button type="button" data-ver="${TRABAJOS.indexOf(t)}" aria-label="Ver «${esc(t.titulo)}»">${imagenPieza(t, { entintado: true })}</button>`).join('')}
+        <p class="nota">${TRABAJOS.filter(t => t.artista === a.id).length} piezas en la galería</p></div>
+    </div></article>`;
+  }).join('');
+  $('#lista-artistas').addEventListener('click', e => {
+    const r = e.target.closest('[data-reservar]');
+    if (r) { const a = artista(r.dataset.reservar); rellenarReserva({ artista: a.id, estilo: a.estilos[0], ref: `Con ${a.nombre}` }); return; }
+    const v = e.target.closest('[data-ver]');
+    if (v) {
+      const t = TRABAJOS[+v.dataset.ver];
+      estado.estilo = 'todos'; estado.artista = t.artista; pintarFiltros(); pintarGaleria();
+      abrirLightbox(estado.lista.indexOf(t));
+    }
+  });
+}
+
+/* ==========================================================================
+   FLASH
+   ========================================================================== */
+function pintarFlash() {
+  $('#hoja-flash').innerHTML = FLASH.map((fl, i) => `
+    <div class="flash-item ${fl.disponible ? '' : 'reservado'}">
+      <div class="entintable" style="width:100%;display:grid;place-items:center">${imagenPieza({ ...fl, titulo: fl.nombre }, { conNombre: false })}</div>
+      <h3 class="flash-item__nombre">${esc(fl.nombre)}</h3>
+      ${fl.disponible ? '' : '<span class="estampa" aria-hidden="true">Reservado</span>'}
+      <p class="flash-item__precio">${esc(fl.precio)} €</p>
+      <p class="flash-item__meta">${esc(fl.tamano)} · ${esc(nombreArtista(fl.artista))}</p>
+      ${fl.disponible
+        ? `<span class="libre">Disponible</span><button class="boton flash-item__boton" type="button" data-flash="${i}">Lo quiero</button>`
+        : `<p class="flash-item__meta"><strong>Reservado</strong>: ya tiene dueño.</p>`}
+    </div>`).join('');
+  $$('#hoja-flash .entintable').forEach(observar);
+  $('#hoja-flash').addEventListener('click', e => {
+    const b = e.target.closest('[data-flash]'); if (!b) return;
+    const fl = FLASH[+b.dataset.flash];
+    rellenarReserva({ estilo: 'Flash', artista: fl.artista, idea: `Flash «${fl.nombre}» (${fl.precio} €, ${fl.tamano}).`, tamano: tamanoDeCm(fl.tamano), ref: `Flash elegido: «${fl.nombre}», ${fl.precio} €` });
+  });
+}
+
+/* ==========================================================================
+   CÓMO FUNCIONA · la misma rosa en cinco estados
+   ========================================================================== */
+function pintarPasos() {
+  const caja = (dentro, extra = '') => `<svg class="dib e-trad" viewBox="0 0 200 200" aria-hidden="true">${dentro}${extra}</svg>`;
+  const rosa = () => MOTIVOS.rosa();
+  const estados = {
+    idea: caja(`<circle class="guia" cx="100" cy="96" r="64"/><path class="guia" d="M100 18V184M22 96H178"/><g class="boceto">${rosa()}</g>`),
+    diseno: caja(`<g class="calco">${rosa()}</g>`),
+    senal: caja(`<g class="calco">${rosa()}</g>`, `<g transform="rotate(-12 100 100)" filter="url(#goma)"><rect x="30" y="74" width="140" height="50" fill="var(--hoja)" stroke="var(--acento)" stroke-width="5"/><text x="100" y="109" text-anchor="middle" font-family="Shrikhand" font-size="25" fill="var(--acento)">Señal ${esc(ESTUDIO.senal)} €</text></g>`),
+    sesion: caja(`<g class="calco" transform="translate(1.6 1.3)" opacity=".32">${rosa()}</g><g>${rosa()}</g>`),
+    cuidados: caja(`<g>${rosa()}</g>`, `<rect class="film" x="14" y="22" width="172" height="160"/>`)
+  };
+  $$('[data-paso]').forEach(el => { el.innerHTML = estados[el.dataset.paso]; });
+}
+
+/* ==========================================================================
+   ESTUDIO · plano orientativo dibujado (sin API)
+   ========================================================================== */
+function pintarMapa() {
+  let b = '';
+  for (let x = -160; x < 700; x += 96) for (let y = -160; y < 560; y += 84)
+    b += `<rect class="${x === 128 && y === 8 ? 'mercado' : 'manzana'}" x="${x}" y="${y}" width="74" height="64" rx="3"/>`;
+  $('#mapa-svg').innerHTML = `<svg viewBox="0 0 480 340" role="img" aria-label="Plano orientativo con la ubicación del estudio">
+    <rect width="480" height="340" fill="#F8F7F3"/>
+    <g transform="rotate(-24 240 170)">${b}
+      <rect class="avenida" x="-260" y="-16" width="1000" height="34" fill="#F8F7F3"/>
+      <rect x="-260" y="-12" width="1000" height="26" fill="#E9E8E1"/>
+      <text class="rotulo" x="150" y="5">[AVENIDA]</text>
+      <text class="rotulo" transform="translate(305 236) rotate(90)">[CALLE]</text>
+      <text class="rotulo" x="352" y="170">[CALLE]</text>
+      <text class="rotulo" x="138" y="44">Mercado</text>
+    </g>
+    <g transform="translate(262 196)">
+      <path d="M0 0C-16-22-24-34-24-46A24 24 0 0 1 24-46C24-34 16-22 0 0Z" fill="var(--acento)"/>
+      <circle cx="0" cy="-46" r="9" fill="#F8F7F3"/>
+      <rect x="30" y="-64" width="${f(ESTUDIO.nombre.length * 14 + 24)}" height="36" fill="#161514"/>
+      <text x="42" y="-38" font-family="Shrikhand" font-size="21" fill="#F8F7F3">${esc(ESTUDIO.nombre)}</text>
+    </g></svg>`;
+}
+
+/* ==========================================================================
+   CUIDADOS Y PREGUNTAS
+   ========================================================================== */
+function pintarPreguntas() {
+  const P = [
+    ['¿Cuál es el precio mínimo?', `${ESTUDIO.precioMinimo} €. Cubre el material estéril de un solo uso y la preparación del puesto, aunque la pieza sea pequeña. Los flashes tienen precio cerrado; lo demás se presupuesta al ver tu idea.`],
+    ['¿Por qué pedís señal?', `Con ${ESTUDIO.senal} € reservas la fecha y el tiempo de diseño de tu artista. Se descuenta del total el día de la sesión.`],
+    ['¿Hay edad mínima?', 'Sí: 18 años cumplidos, con DNI o pasaporte el día de la cita. No tatuamos a menores, tampoco con autorización.'],
+    ['¿Y si tengo que cancelar o cambiar la cita?', 'Avísanos con 72 horas y movemos la cita sin perder la señal. Con menos aviso, o si no vienes, la señal se pierde.'],
+    ['¿Qué llevo el día de la cita?', 'DNI, haber comido bien, ropa cómoda que deje la zona a mano y algo para entretenerte si la sesión es larga. Nada de alcohol las 24 horas anteriores.'],
+    ['¿Cómo lo cuido después?', 'Film las primeras horas, lavado suave con jabón neutro, crema fina dos o tres veces al día y nada de sol, piscina ni mar durante dos semanas. Te damos la ficha impresa.'],
+    ['¿Duele?', 'Depende de la zona y de cada piel. Costillas, pies y esternón molestan más; antebrazo y muslo, bastante menos. Paramos cuando lo necesites.'],
+    ['¿Tapáis tatuajes antiguos?', 'Sí. Hacemos cover-up y arreglos: lo valoramos gratis en persona o por foto y te decimos con sinceridad si se puede tapar y cómo.'],
+    ['¿Usáis anestesia?', 'Tenemos crema anestésica tópica para zonas sensibles (15 €). Se aplica 45 minutos antes y baja mucho la molestia de la primera hora.'],
+    ['¿Hacéis bonos regalo?', 'Sí, desde 50 €. Valen un año, con cualquier artista y para tatuaje a medida o flash.'],
+    ['¿Puedo traer mi propio diseño?', 'Claro, como referencia. Lo redibujamos para tu cuerpo y a tu tamaño. No copiamos tatuajes de otras personas.']
+  ];
+  $('#preguntas').innerHTML = P.map(([q, r], i) =>
+    `<details class="pregunta"${i === 0 ? ' open' : ''}><summary>${esc(q)}<i aria-hidden="true"></i></summary><div class="pregunta__resp"><p>${esc(r)}</p></div></details>`).join('');
+}
+
+/* ==========================================================================
+   RESERVA · genera el mensaje de WhatsApp o email (sin servidor)
+   ========================================================================== */
+const form = $('#form-reserva');
+const TAMANOS = ['Mini (hasta 5 cm)', 'Pequeño (5–10 cm)', 'Mediano (10–20 cm)', 'Grande (más de 20 cm)', 'No lo sé'];
+const ZONAS = [...new Set([...TRABAJOS.map(t => t.zona), 'Antebrazo', 'Brazo', 'Muñeca', 'Mano', 'Clavícula', 'Costillas', 'Espalda', 'Pierna', 'Tobillo'])];
+function tamanoDeCm(txt) { const n = parseFloat(txt); if (!n) return TAMANOS[4]; return n <= 5 ? TAMANOS[0] : n <= 10 ? TAMANOS[1] : n <= 20 ? TAMANOS[2] : TAMANOS[3]; }
+
+function pintarFormulario() {
+  const estilos = [...new Set([...ESTILOS, ...ARTISTAS.flatMap(a => a.estilos)])];
+  $('#f-estilo').innerHTML = ['No lo sé, aconsejadme', ...estilos, 'Flash'].map(e => `<option>${esc(e)}</option>`).join('');
+  $('#f-artista').innerHTML = `<option value="">Me da igual</option>` + ARTISTAS.map(a => `<option value="${esc(a.id)}">${esc(a.nombre)}</option>`).join('');
+  $('#f-zona').innerHTML = ['Aún no lo sé', ...ZONAS, 'Otra'].map(z => `<option>${esc(z)}</option>`).join('');
+  $('#tamanos').innerHTML = TAMANOS.map((t, i) => `<label><input type="radio" name="tamano" value="${esc(t)}"${i === 4 ? ' checked' : ''}><span>${esc(t)}</span></label>`).join('');
+}
+
+let ideaAuto = '';
+function rellenarReserva({ estilo, artista: a, zona, idea, tamano, ref, fechas }) {
+  if (fechas) $('#f-fechas').value = fechas;
+  if (estilo) { const s = $('#f-estilo'); if (![...s.options].some(o => o.value === estilo)) s.add(new Option(estilo)); s.value = estilo; }
+  if (a !== undefined) $('#f-artista').value = a;
+  if (zona) { const z = $('#f-zona'); if (![...z.options].some(o => o.value === zona)) z.add(new Option(zona)); z.value = zona; }
+  if (tamano) { const r = $$('input[name="tamano"]').find(x => x.value === tamano); if (r) r.checked = true; }
+  const ta = $('#f-idea');
+  if (idea && (!ta.value.trim() || ta.value === ideaAuto)) { ta.value = idea; ideaAuto = idea; }
+  if (ref) { $('#ref-texto').textContent = ref; $('#ref').classList.add('visible'); }
+  $('#hecho').classList.remove('visible');
+  $('#reserva').scrollIntoView({ behavior: reducir ? 'auto' : 'smooth' });
+  setTimeout(() => $('#f-nombre').focus({ preventScroll: true }), reducir ? 0 : 700);
+}
+$('#ref-quitar').addEventListener('click', () => {
+  $('#ref').classList.remove('visible');
+  if ($('#f-idea').value === ideaAuto) $('#f-idea').value = '';
+  ideaAuto = '';
+});
+
+function mensaje(d) {
+  return [
+    `Hola, ${ESTUDIO.nombre}. Quiero pedir cita:`,
+    '',
+    `- Nombre: ${d.nombre}`,
+    `- Idea: ${d.idea}`,
+    `- Estilo: ${d.estilo}`,
+    `- Artista: ${d.artista ? nombreArtista(d.artista) : 'Me da igual'}`,
+    `- Zona: ${d.zona}`,
+    `- Tamaño: ${d.tamano}`,
+    `- Fechas preferidas: ${d.fechas || 'Flexibles'}`,
+    '',
+    '(Enviado desde la web)'
+  ].join('\n');
+}
+
+form.addEventListener('submit', e => {
+  e.preventDefault();
+  const datos = Object.fromEntries(new FormData(form));
+  datos.nombre = (datos.nombre || '').trim(); datos.idea = (datos.idea || '').trim();
+  const errores = { nombre: datos.nombre ? '' : 'Dinos tu nombre para saber a quién responder.', idea: datos.idea.length >= 4 ? '' : 'Cuéntanos tu idea, aunque sea en una línea.' };
+  let primero = null;
+  for (const [k, msg] of Object.entries(errores)) {
+    const campo = $(`#f-${k}`); $(`#e-${k}`).textContent = msg;
+    campo.setAttribute('aria-invalid', msg ? 'true' : 'false');
+    if (msg && !primero) primero = campo;
+  }
+  if (primero) { primero.focus(); return; }
+
+  const via = e.submitter?.value || 'whatsapp';
+  const txt = mensaje(datos);
+  let url;
+  if (via === 'email') {
+    const asunto = `Cita: ${datos.nombre} · ${datos.estilo}`;
+    url = `${enlaces.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(txt)}`;
+    location.href = url;
+  } else {
+    url = `${enlaces.whatsapp}?text=${encodeURIComponent(txt)}`;
+    window.open(url, '_blank', 'noopener');
+  }
+  $('#hecho-texto').textContent = via === 'email'
+    ? 'Se ha abierto tu programa de correo con el mensaje escrito. Solo te queda darle a enviar.'
+    : 'Se ha abierto WhatsApp con el mensaje escrito. Solo te queda darle a enviar.\nSi no se ha abierto, copia el mensaje y mándalo tú.';
+  $('#hecho-mensaje').textContent = txt;
+  $('#hecho').classList.add('visible');
+  $('#hecho').focus({ preventScroll: true });
+});
+['nombre', 'idea'].forEach(k => $(`#f-${k}`).addEventListener('input', () => { $(`#e-${k}`).textContent = ''; $(`#f-${k}`).setAttribute('aria-invalid', 'false'); }));
+$('#copiar').addEventListener('click', async e => {
+  try { await navigator.clipboard.writeText($('#hecho-mensaje').textContent); e.target.textContent = 'Copiado'; }
+  catch { e.target.textContent = 'Selecciónalo y cópialo a mano'; }
+  setTimeout(() => { e.target.textContent = 'Copiar mensaje'; }, 2200);
+});
+
+/* ==========================================================================
+   NAVEGACIÓN, APARICIONES, CURSOR Y PIE
+   ========================================================================== */
+const cab = $('.cabecera'), menu = $('.menu-boton');
+menu.addEventListener('click', () => { const ab = cab.classList.toggle('abierta'); menu.setAttribute('aria-expanded', ab); menu.textContent = ab ? 'Cerrar' : 'Menú'; });
+$$('.nav a').forEach(a => a.addEventListener('click', () => { cab.classList.remove('abierta'); menu.setAttribute('aria-expanded', 'false'); menu.textContent = 'Menú'; }));
+const barra = $('.progreso span');
+addEventListener('scroll', () => {
+  cab.classList.toggle('con-scroll', scrollY > 20);
+  const max = document.documentElement.scrollHeight - innerHeight;
+  barra.style.transform = `scaleX(${max > 0 ? Math.min(1, scrollY / max) : 0})`;
+}, { passive: true });
+
+const io = 'IntersectionObserver' in window ? new IntersectionObserver(entradas => entradas.forEach(en => {
+  if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+}), { rootMargin: '0px 0px -8% 0px', threshold: .12 }) : null;
+function observar(el) { if (io && !reducir) io.observe(el); else el.classList.add('in'); }
+function iniciarApariciones() {
+  $$('[data-rv]').forEach(sec => { $$('.rv', sec).forEach((el, i) => el.style.setProperty('--d', `${Math.min(i, 8) * 80}ms`)); observar(sec); });
+}
+
+function iniciarCursor() {
+  if (!conRaton) return;
+  document.documentElement.classList.add('con-aguja');
+  const ag = $('.aguja'); let x = -50, y = -50, ax = -50, ay = -50;
+  addEventListener('pointermove', e => {
+    x = e.clientX; y = e.clientY;
+    const t = e.target;
+    ag.classList.toggle('sobre', !!t.closest('a, button, summary, label, [data-pieza]'));
+    ag.classList.toggle('oculta', !!t.closest('input, textarea, select'));
+  }, { passive: true });
+  document.addEventListener('pointerleave', () => ag.classList.add('oculta'));
+  document.addEventListener('pointerenter', () => ag.classList.remove('oculta'));
+  const bucle = () => { ax += (x - ax) * (reducir ? 1 : .32); ay += (y - ay) * (reducir ? 1 : .32); ag.style.transform = `translate3d(${ax}px, ${ay}px, 0)`; requestAnimationFrame(bucle); };
+  bucle();
+}
+
+function ajustarPie() {
+  const el = $('#pie-nombre');
+  el.innerHTML = `<b style="font-weight:400">${esc(ESTUDIO.nombre)}<span>.</span></b>`;
+  const ajustar = () => { el.style.fontSize = '100px'; const w = el.firstChild.getBoundingClientRect().width; el.style.fontSize = `${Math.floor((document.documentElement.clientWidth - 8) / w * 100)}px`; };
+  ajustar();
+  document.fonts?.ready.then(ajustar);
+  addEventListener('resize', ajustar);
+}
+
+/* ==========================================================================
+   CINTAS DE TEMÁTICAS
+   ========================================================================== */
+const estrellita = '<svg viewBox="-10 -10 20 20" aria-hidden="true"><path d="M0 -10Q0 0 10 0Q0 0 0 10Q0 0 -10 0Q0 0 0 -10Z" fill="currentColor"/></svg>';
+function pintarCintas() {
+  $$('[data-cinta]').forEach(p => {
+    const lista = p.dataset.cinta === '1' ? [...TEMATICAS].reverse() : TEMATICAS;
+    const una = lista.map(t => `<span>${esc(t)}${estrellita}</span>`).join('');
+    p.innerHTML = una + `<span aria-hidden="true" style="display:contents">${una}</span>`;
+  });
+}
+
+/* ==========================================================================
+   SESIONES · el mismo dibujo sobre la piel, paso a paso
+   ========================================================================== */
+function dibujoSesion() {
+  const serp = 'M92 410C70 380 150 362 150 330C150 296 88 300 88 262C88 226 152 228 152 192C152 168 128 160 112 168';
+  return `
+    <path class="p o" d="M110 134L130 134L126 360L120 404L114 360Z"/>
+    <path class="s" d="M121 137L129 137L125 360L121 394Z"/><path class="o" d="M120 140L120 384"/>
+    <path class="k o" d="M82 120Q120 111 158 120Q163 127 158 133Q120 126 82 133Q77 127 82 120Z"/>
+    <path class="r o" d="M111 64L129 64L131 118L109 118Z"/><path class="o" d="M110 78L130 74M110 92L130 88M110 106L130 102"/>
+    <circle class="k o" cx="120" cy="50" r="12"/><circle class="p" cx="116" cy="46" r="3"/>
+    <path class="tb" d="${serp}"/><path class="tf" d="${serp}"/><path class="td" d="${serp}"/>
+    <path class="k o" d="M114 158C100 149 80 153 72 166C80 179 100 183 114 176C121 170 121 163 114 158Z"/>
+    <circle class="p" cx="90" cy="163" r="2.6"/><path class="o" d="M72 166L60 160M72 166L60 173"/>
+    ${chispa(78, 92, 9)}${chispa(162, 252, 7)}${chispa(80, 330, 6)}<circle class="k dot" cx="160" cy="70" r="3"/>`;
+}
+function iniciarSesiones() {
+  const P = PROYECTO, pasos = P.pasos, cont = $('#ses-dibujo');
+  const d = dibujoSesion();
+  cont.innerHTML = `<svg class="dib e-trad piel-dib ses-${pasos[0].estado}" viewBox="0 0 240 460" role="img" aria-label="Antebrazo con el tatuaje ${esc(P.titulo)}">
+    <path class="piel" d="M56 6C48 120 52 300 68 456L172 456C188 300 192 120 184 6Z"/>
+    <path class="piel-sombra" d="M164 6C172 120 170 300 162 456L172 456C188 300 192 120 184 6Z"/>
+    <g class="boceto">${d}<path class="guia" d="M120 24V440M70 230H170"/></g>
+    <g class="calco" transform="translate(1.4 1.2)">${d}</g>
+    <g class="irrita">${d}</g>
+    <g class="tinta">${d}</g></svg>`;
+  const svg = $('svg', cont), rango = $('#ses-rango'), ficha = $('#ses-ficha');
+  $('#ses-pie').innerHTML = `<b>${esc(P.titulo)}</b><span>${esc(P.zona)} · ${esc(P.medida)} · ${esc(nombreArtista(P.artista))}</span><span>${esc(P.cliente)}</span>`;
+  $('#ses-pasos').innerHTML = pasos.map((p, i) => `<li><button type="button" data-paso-ses="${i}">${esc(p.nombre)}</button></li>`).join('');
+  rango.max = pasos.length - 1;
+  let actual = -1, tocado = false, reloj = null;
+  const ir = (i, anim = true) => {
+    if (i === actual) return; actual = i;
+    const p = pasos[i];
+    svg.setAttribute('class', `dib e-trad piel-dib ses-${p.estado}`);
+    rango.value = i; rango.style.setProperty('--avance', `${i / (pasos.length - 1) * 100}%`);
+    $$('[data-paso-ses]').forEach((b, j) => {
+      if (j === i) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+      b.classList.toggle('hecho-paso', j < i);
+    });
+    const pct = Math.round(i / (pasos.length - 1) * 100);
+    ficha.innerHTML = `<h3>${esc(p.nombre)}</h3>
+      <dl><dt>Cuándo</dt><dd>${esc(p.cuando)}</dd><dt>Duración</dt><dd>${esc(p.duracion)}</dd><dt>Material</dt><dd>${esc(p.material)}</dd></dl>
+      <p>${esc(p.texto)}</p>
+      <div class="ses__avance"><span><i style="transform:scaleX(${pct / 100})"></i></span>${pct} %</div>
+      <p class="ses__resumen">${esc(P.presupuesto)}</p>
+      ${i === pasos.length - 1 ? '<button class="boton" type="button" data-proyecto style="margin-top:22px">Quiero un proyecto así</button>' : ''}`;
+    if (anim && !reducir) { ficha.classList.remove('cambia'); void ficha.offsetWidth; ficha.classList.add('cambia'); }
+  };
+  const parar = () => { tocado = true; clearInterval(reloj); reloj = null; };
+  $('#ses-pasos').addEventListener('click', e => { const b = e.target.closest('[data-paso-ses]'); if (b) { parar(); ir(+b.dataset.pasoSes); } });
+  rango.addEventListener('input', () => { parar(); ir(+rango.value); });
+  ficha.addEventListener('click', e => {
+    if (!e.target.closest('[data-proyecto]')) return;
+    rellenarReserva({ estilo: P.estilo, artista: P.artista, zona: P.zona, tamano: TAMANOS[3], idea: `Un proyecto grande parecido a «${P.titulo}», en varias sesiones.`, ref: `Proyecto: «${P.titulo}»` });
+  });
+  ir(0, false);
+  // Se reproduce solo al verlo, hasta que el visitante lo toca
+  if (!reducir && 'IntersectionObserver' in window) {
+    const ob = new IntersectionObserver(([en]) => {
+      if (en.isIntersecting && !tocado && !reloj) {
+        reloj = setInterval(() => { if (actual >= pasos.length - 1) { clearInterval(reloj); return; } ir(actual + 1); }, 2600);
+      } else if (!en.isIntersecting && reloj) { clearInterval(reloj); reloj = null; }
+    }, { threshold: .35 });
+    ob.observe($('#ses'));
+  }
+}
+function pintarDia() {
+  $('#dia-lista').innerHTML = DIA_SESION.map(([h, t]) => `<li><b>${esc(h)}</b><p>${esc(t)}</p></li>`).join('');
+}
+
+/* ==========================================================================
+   ARTISTAS INVITADOS
+   ========================================================================== */
+function pintarGira() {
+  $('#gira').innerHTML = INVITADOS.map((g, i) => `<li>
+    <span class="gira__fecha">${esc(g.fechas)}</span>
+    <span class="gira__nombre">${esc(g.nombre)}<span class="gira__desde">desde ${esc(g.desde)}</span></span>
+    <span class="gira__estilo">${esc(g.estilo)}<small>${g.huecos ? `${g.huecos} ${g.huecos === 1 ? 'hueco libre' : 'huecos libres'}` : 'Agenda llena'}</small></span>
+    ${g.huecos ? `<button class="boton" type="button" data-invitado="${i}">Pedir hueco</button>` : '<span class="completo">Completo</span>'}
+  </li>`).join('');
+  $('#gira').addEventListener('click', e => {
+    const b = e.target.closest('[data-invitado]'); if (!b) return;
+    const g = INVITADOS[+b.dataset.invitado];
+    rellenarReserva({ artista: '', fechas: g.fechas, idea: `Quiero cita con ${g.nombre} (artista invitado, ${g.fechas}).`, ref: `Artista invitado: ${g.nombre} · ${g.fechas}` });
+  });
+}
+
+/* ==========================================================================
+   SERVICIOS Y CLIENTES
+   ========================================================================== */
+function pintarTablon() {
+  $('#tablon').innerHTML = SERVICIOS.map(sv => `<li><strong>${esc(sv.nombre)}</strong><em>${esc(sv.precio)}</em><p>${esc(sv.detalle)}</p></li>`).join('');
+}
+const estrella5 = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 14.8 4.4 18.1l1.4-6.3L1 7.5l6.4-.6z" fill="currentColor"/></svg>';
+function pintarClientes() {
+  $('#cifras').innerHTML = ESTUDIO.cifras.map(([n, t]) => `<div class="rv"><dt>${esc(t)}</dt><dd data-cifra="${esc(n)}">${esc(n)}</dd></div>`).join('');
+  const tarjeta = (r, i) => `<article class="resena" style="--rot:${[-1.2, .8, -.4, 1.1][i % 4]}deg">
+    <div class="resena__estrellas" role="img" aria-label="5 de 5">${estrella5.repeat(5)}</div>
+    <p>«${esc(r.texto)}»</p><footer><b>${esc(r.quien)}</b> · ${esc(r.pieza)}</footer></article>`;
+  const mitad = Math.ceil(RESENAS.length / 2);
+  [RESENAS.slice(0, mitad), RESENAS.slice(mitad)].forEach((fila, k) => {
+    const una = fila.map((r, i) => tarjeta(r, i + k)).join('');
+    $(`[data-resenas="${k}"]`).innerHTML = una + `<div aria-hidden="true" style="display:contents">${una}</div>`;
+  });
+  // Contadores: cuentan hasta la cifra al aparecer
+  const formato = (v, dec) => {
+    const [ent, frac] = v.toFixed(dec).split('.');
+    return ent.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + (frac ? ',' + frac : '');
+  };
+  const contar = dd => {
+    const txt = dd.dataset.cifra, dec = txt.includes(',') ? txt.split(',')[1].length : 0;
+    const fin = parseFloat(txt.replace(/\./g, '').replace(',', '.'));
+    if (isNaN(fin) || reducir) return;
+    const t0 = performance.now(), dur = 1600;
+    const paso = t => { const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3); dd.textContent = formato(fin * e, dec); if (k < 1) requestAnimationFrame(paso); else dd.textContent = txt; };
+    requestAnimationFrame(paso);
+  };
+  if ('IntersectionObserver' in window && !reducir) {
+    const ob = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { $$('[data-cifra]', en.target).forEach(contar); ob.unobserve(en.target); } }), { threshold: .4 });
+    ob.observe($('#cifras'));
+  }
+}
+
+/* ==========================================================================
+   MAPA DEL DOLOR
+   ========================================================================== */
+// Formas de la silueta (vista frontal). "lado": se dibuja también en espejo.
+const SILUETA = {
+  cuello:      { d: 'M108 72H132L134 98H106Z' },
+  clavicula:   { d: 'M64 104Q120 90 176 104L174 118Q120 106 66 118Z' },
+  hombro:      { d: 'M66 104Q40 106 34 136L58 144Q60 124 66 118Z', lado: true },
+  pecho:       { d: 'M66 118Q90 110 112 110L112 176Q88 178 68 172Z', lado: true },
+  esternon:    { d: 'M112 110H128V178H112Z' },
+  costillas:   { d: 'M68 174Q88 180 106 180L106 236Q86 236 72 230Z', lado: true },
+  abdomen:     { d: 'M106 180H134L134 238Q120 242 106 238Z' },
+  brazo:       { d: 'M34 138L58 146L52 214L30 210Z', lado: true },
+  antebrazo:   { d: 'M30 212L52 216L44 290L22 286Z', lado: true },
+  mano:        { d: 'M22 288L44 292L46 326Q34 336 20 324Z', lado: true },
+  muslo:       { d: 'M70 270Q92 280 118 282L112 380L78 380Z', lado: true },
+  rodilla:     { d: 'M78 382H112L110 408H80Z', lado: true },
+  pantorrilla: { d: 'M80 410H110L104 478H86Z', lado: true },
+  pie:         { d: 'M86 480H104L108 500Q96 512 76 506Z', lado: true }
+};
+const NIVELES = ['', 'Muy bajo', 'Bajo', 'Medio', 'Alto', 'Muy alto'];
+function iniciarDolor() {
+  const zonas = ZONAS_DOLOR.filter(z => SILUETA[z.id]);
+  const forma = (z, espejo) => `<path class="zona n${z.dolor}" data-zona="${z.id}" d="${SILUETA[z.id].d}"${espejo ? ' transform="matrix(-1 0 0 1 240 0)"' : ''}/>`;
+  $('#dolor-cuerpo').innerHTML = `<svg viewBox="0 0 240 520" aria-hidden="true">
+      <ellipse class="cuerpo" cx="120" cy="42" rx="25" ry="30"/>
+      <path class="cuerpo" d="M70 232Q120 250 170 232L172 268Q120 286 68 268Z"/>
+      ${zonas.map(z => forma(z, false) + (SILUETA[z.id].lado ? forma(z, true) : '')).join('')}
+    </svg>
+    <p class="dolor__leyenda">Menos ${[16, 32, 50, 68, 86].map(p => `<i style="background:color-mix(in oklab, var(--tinta) ${p}%, var(--papel))"></i>`).join('')} Más</p>`;
+  $('#dolor-zonas').innerHTML = ZONAS_DOLOR.map(z => `<button class="chip" type="button" data-zona-b="${z.id}" aria-pressed="false">${esc(z.nombre)}</button>`).join('');
+  const gota = llena => `<svg viewBox="0 0 26 40" aria-hidden="true"><path class="${llena ? 'llena' : 'vacia'}" d="M13 2C18 12 22 18 22 27a9 9 0 0 1-18 0C4 18 8 12 13 2Z"/></svg>`;
+  const ficha = $('#dolor-ficha');
+  const elegir = (id, anim = true) => {
+    const z = ZONAS_DOLOR.find(x => x.id === id); if (!z) return;
+    $$('#dolor-cuerpo .zona').forEach(p => p.classList.toggle('activa', p.dataset.zona === id));
+    $$('[data-zona-b]').forEach(b => b.setAttribute('aria-pressed', b.dataset.zonaB === id));
+    ficha.innerHTML = `<h3>${esc(z.nombre)}</h3>
+      <div class="agujas" role="img" aria-label="Dolor ${z.dolor} de 5">${[1, 2, 3, 4, 5].map(n => gota(n <= z.dolor)).join('')}<strong>${NIVELES[z.dolor]}</strong></div>
+      <dl><dt>Curación</dt><dd>${esc(z.curacion)}</dd><dt>Le sienta bien</dt><dd>${esc(z.ideal)}</dd></dl>
+      <p>${esc(z.nota)}</p>
+      <button class="boton" type="button" data-zona-reserva="${esc(z.nombre)}">Quiero tatuarme aquí</button>`;
+    if (anim && !reducir) { ficha.classList.remove('cambia'); void ficha.offsetWidth; ficha.classList.add('cambia'); }
+  };
+  $('#dolor-cuerpo').addEventListener('click', e => { const p = e.target.closest('[data-zona]'); if (p) elegir(p.dataset.zona); });
+  $('#dolor-zonas').addEventListener('click', e => { const b = e.target.closest('[data-zona-b]'); if (b) elegir(b.dataset.zonaB); });
+  ficha.addEventListener('click', e => { const b = e.target.closest('[data-zona-reserva]'); if (b) rellenarReserva({ zona: b.dataset.zonaReserva, ref: `Zona elegida: ${b.dataset.zonaReserva}` }); });
+  elegir('antebrazo', false);
+}
+
+/* ==========================================================================
+   EFECTOS · titulares que se calcan y se entintan, salpicaduras de tinta
+   ========================================================================== */
+function entintarTitulares() {
+  $$('main section:not(.portada) h2').forEach(h => {
+    const t = h.textContent;
+    h.classList.add('h-entinta');
+    h.innerHTML = `<span class="h__calco" aria-hidden="true">${esc(t)}</span><span class="h__tinta">${esc(t)}</span>`;
+    observar(h);
+  });
+}
+function iniciarSalpicaduras() {
+  if (reducir) return;
+  const svg = () => {
+    let s = '<svg viewBox="-50 -50 100 100" fill="currentColor"><circle r="12"/>';
+    for (let i = 0; i < 9; i++) {
+      const a = Math.random() * Math.PI * 2, d = 15 + Math.random() * 24, r = 1.6 + Math.random() * 4.4;
+      s += `<circle cx="${f(Math.cos(a) * d)}" cy="${f(Math.sin(a) * d)}" r="${f(r)}"/>`;
+      if (i % 3 === 0) s += `<path d="M0 0L${f(Math.cos(a) * d * .9)} ${f(Math.sin(a) * d * .9)}" stroke="currentColor" stroke-width="${f(r * .9)}" stroke-linecap="round"/>`;
+    }
+    return s + '</svg>';
+  };
+  addEventListener('pointerdown', e => {
+    if (e.button !== 0 || e.target.closest('input, textarea, select, label, .dibujo-hero, dialog')) return;
+    const zona = e.target.closest('section, footer, header') || document.body;
+    const el = document.createElement('div');
+    el.className = 'salpicadura';
+    el.style.cssText = `left:${e.clientX}px;top:${e.clientY}px;--r:${Math.random() * 360 | 0}deg;color:${getComputedStyle(zona).color}`;
+    el.innerHTML = svg();
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }, { passive: true });
+}
+
+/* ---------- Arranque ---------- */
+iniciarTitular();
+iniciarHero();
+pintarFiltros();
+pintarGaleria();
+pintarArtistas();
+pintarFlash();
+pintarPasos();
+pintarMapa();
+pintarPreguntas();
+pintarFormulario();
+pintarCintas();
+iniciarSesiones();
+pintarDia();
+pintarGira();
+pintarTablon();
+pintarClientes();
+iniciarDolor();
+entintarTitulares();
+iniciarSalpicaduras();
+iniciarApariciones();
+iniciarCursor();
+ajustarPie();
+const arrancar = () => document.documentElement.classList.add('listo');
+(document.fonts ? Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]) : Promise.resolve()).then(arrancar);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+.impeccable/
+.taste-skill/
+.claude/settings.local.json
+node_modules/
+.DS_Store
+Thumbs.db
+publico/
+.wrangler/

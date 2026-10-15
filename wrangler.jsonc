@@ -1,0 +1,13 @@
+{
+  // Cloudflare Workers (assets estáticos). Antes de desplegar copia index.html a publico/
+  // para no publicar README, CLAUDE.md ni otros archivos del repositorio.
+  "name": "demo-tatuaje-3",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "build": {
+    "command": "node -e \"const fs=require('fs');fs.mkdirSync('publico',{recursive:true});fs.copyFileSync('index.html','publico/index.html')\""
+  },
+  "assets": {
+    "directory": "./publico"
+  }
+}
