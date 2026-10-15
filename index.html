@@ -271,7 +271,7 @@ const RESENAS = [
     --papel: #111110;
     --papel-2: #1A1A18;
     --papel-3: #2A2926;
-    --hoja: #1A1A18;
+    --hoja: #F2F0EA;
     --tinta: #F2F0EA;
     --tinta-2: #B3B0A8;
     --calco: #8A8780;
@@ -988,7 +988,11 @@ h1, h2, h3 { font-weight: 700; letter-spacing: -.035em; line-height: 1.02; font-
 .artista:nth-child(odd) { background: var(--papel-2); }
 .artista__foto { filter: grayscale(.1); }
 .flash { background: var(--pared); }
-.hoja-flash { background: transparent; padding: 0; }
+.hoja-flash { background: transparent; padding: 0; color: var(--sobre-pared); }
+.flash .flash-item__meta { color: #B3B0A8; }
+.flash .flash-item__nombre { color: #fff; }
+.flash .libre { color: #fff; }
+.flash .flash-item__precio { color: #FF6B57; }
 .hoja-flash img { aspect-ratio: 1 / 1; object-fit: cover; width: 100%; }
 .pie { background: var(--pared); }
 .gira li:nth-child(odd), .gira li:nth-child(even) { background: var(--papel-2); color: var(--tinta); }
